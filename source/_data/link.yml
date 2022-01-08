@@ -1,0 +1,8 @@
+class:
+  class_name: 友情链接
+  link_list:
+    1:
+      name: Kakaluoto
+      link: https://space.bilibili.com/146159499?spm_id_from=333.1007.0.0
+      avatar: https://z3.ax1x.com/2021/10/27/57Qjns.png
+      descr: B站
