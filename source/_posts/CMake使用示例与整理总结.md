@@ -1,5 +1,5 @@
 ---
-title: CMake整理与Linux 工程目录结构
+title: CMake使用示例与整理总结
 date: 2021-11-25 
 tags: [C++,CMake,Linux]
 cover: https://s1.ax1x.com/2021/12/09/oW7NP1.jpg
@@ -395,84 +395,4 @@ SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 参考**SET**和**AUX_SOURCE_DIRECTORY**用法
 
 建议：在Project根目录先建立build,然后在build文件夹内运行cmake ..，这样就不会污染源代码, 如果不想要这些自动生成的文件了，只要简单的删除build文件夹就可以
-
-# 二. Linux CMake工程目录结构
-
-## 主文件目录
-
-```
-./lib/
-./src/
-./build
-./CMakeLists.txt
-```
-
-## ./CMakeLists.txt
-
-```
-CMAKE_MINIMUM_REQUIRED( VERSION 3.10 )
-
-PROJECT(MAIN)
-
-ADD_SUBDIRECTORY(./lib )
-
-ADD_SUBDIRECTORY(./src)
-
-```
-
-
-
-## ./lib/CMakeLists.txt
-
-```
-AUX_SOURCE_DIRECTORY(. DIR_LIB_SRCS)
-
-SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
-
-ADD_LIBRARY(LIB STATIC ${DIR_LIB_SRCS})
-```
-
-
-
-## ./src/CMakeLists.txt
-
-```
-INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/lib)
-  
-SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
-
-AUX_SOURCE_DIRECTORY(./ DIR_SRCS)
-
-ADD_EXECUTABLE(MAIN ${DIR_SRCS})
-
-TARGET_LINK_LIBRARIES(MAIN LIB)
-
-```
-
-
-
-## vscode调试
-
-### ./CMakeLists.txt
-
-```
-CMAKE_MINIMUM_REQUIRED( VERSION 3.10 )
-
-PROJECT(MAIN)
-
-add_definitions(-std=c++14)
-SET(CMAKE_BUILD_TYPE "Debug")
-SET(CMAKE_CXX_FLAG_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g -ggdb")
-SET(CMAKE_CXX_FLAG_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
-
-ADD_SUBDIRECTORY(./lib )
-
-ADD_SUBDIRECTORY(./src)
-```
-
-### 修改launch.json
-
-```
-"program": "${workspaceFolder}/build/bin/MAIN"
-```
 
