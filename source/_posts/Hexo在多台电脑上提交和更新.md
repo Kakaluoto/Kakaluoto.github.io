@@ -144,3 +144,15 @@ hexo d -g
 这里提一嘴，当新电脑上的操作成功之后，其实对于新电脑还是老电脑其实都无所谓了，任何一台电脑包括老电脑只要安装了NodeJs环境，就都可以按照在新电脑上的操作完整地复刻出一个hexo环境，你甚至可以把老电脑原有的hexo工程删掉再执行上面这几步一样可以快速构建hexo环境，可以看到步骤非常简单。
 
 此外，为了保证同步，推荐先`git pull`合并更新再进行博客的编写。
+
+
+
+## 参考链接
+
+[利用Hexo在多台电脑上提交和更新github pages博客 - 简书 (jianshu.com)](https://www.jianshu.com/p/0b1fccce74e0)
+
+[hexo源码上传到GitHub-以防多台电脑操作/重装系统/要将hexo移动到其他磁盘 - 巧莓兔 - 博客园 (cnblogs.com)](https://www.cnblogs.com/wy0526/p/13066869.html)
+
+[Hexo博客备份 - 简书 (jianshu.com)](https://www.jianshu.com/p/57b5a384f234)
+
+[(59 封私信 / 80 条消息) 使用hexo，如果换了电脑怎么更新博客？ - 知乎 (zhihu.com)](https://www.zhihu.com/question/21193762)
