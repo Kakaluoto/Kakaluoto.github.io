@@ -1,1 +1,1 @@
-hexo cl&hexo g&hexo d
+git add .&git commit&git push&hexo cl&hexo g&hexo d
