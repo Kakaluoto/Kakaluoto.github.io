@@ -155,4 +155,4 @@ hexo d -g
 
 [Hexo博客备份 - 简书 (jianshu.com)](https://www.jianshu.com/p/57b5a384f234)
 
-[(59 封私信 / 80 条消息) 使用hexo，如果换了电脑怎么更新博客？ - 知乎 (zhihu.com)](https://www.zhihu.com/question/21193762)
+[使用hexo，如果换了电脑怎么更新博客？ - 知乎 (zhihu.com)](https://www.zhihu.com/question/21193762)
