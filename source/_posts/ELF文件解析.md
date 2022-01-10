@@ -912,5 +912,5 @@ Symbol table '.symtab' contains 80 entries
 
 [C语言实现ELF文件解析_Yuhan的博客-CSDN博客_elf文件读取](https://blog.csdn.net/qq_45228537/article/details/107020572)
 
-《程序员的自我修养——链接、装载与库》王喆
+《程序员的自我修养——链接、装载与库》俞甲子，石凡，潘爱民
 

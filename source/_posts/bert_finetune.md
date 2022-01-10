@@ -1,6 +1,6 @@
 ---
 title: Bert微调
-date: 
+date: 2021-11-20
 tags: [机器学习,NLP]
 cover: https://s1.ax1x.com/2021/12/09/oW7ZUs.jpg
 mathjax: true
