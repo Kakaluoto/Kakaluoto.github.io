@@ -73,11 +73,11 @@ deploy:
 
 先创建一个分支hexo
 
-![img](https://img2020.cnblogs.com/blog/1570201/202006/1570201-20200608164409223-883731007.jpg)
+![img](https://s4.ax1x.com/2022/01/10/7VVsAI.jpg)
 
 将其设置为默认分支
 
-![img](https://img2020.cnblogs.com/blog/1570201/202006/1570201-20200608164440537-1761067720.jpg)
+![img](https://s4.ax1x.com/2022/01/10/7VZpU1.jpg)
 
 **2.打包将要推送到GitHub上的原始文件**
 
@@ -93,9 +93,7 @@ git clone git@github.com:username/username.github.io.git
 
 注意：1.现在clone下来的文件夹内应该有个`.gitignore文件`，用来忽略一些不需要的文件，表示这些类型文件不需要git。如果没有，右键新建，内容如下：
 
-[![复制代码](https://common.cnblogs.com/images/copycode.gif)](javascript:void(0);)
-
-```
+```sh
 .DS_Store
 Thumbs.db
 db.json
@@ -105,7 +103,6 @@ public/
 .deploy*/
 ```
 
-[![复制代码](https://common.cnblogs.com/images/copycode.gif)](javascript:void(0);)
 
 2.如果已经clone过主题文件，那么需要把theme主题文件夹里的 .git 也删除。因为git不能嵌套上传，最好是显示隐藏文件，检查一下有没有，否则上传的时候会出错，导致你的主题文件无法上传，这样你的配置在别的电脑上就用不了了。
 
