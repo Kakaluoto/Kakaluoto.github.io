@@ -88,8 +88,8 @@ local_search:
 
 # MathJax
 mathjax:
-  enable: true
-  per_page: true
+  enable: false
+  per_page: false
 
 # KaTeX
 katex:
