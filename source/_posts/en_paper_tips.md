@@ -1,7 +1,7 @@
 ---
-title: 英文论文套话
+title: 【论文】英文论文套话
 date: 2021-11-14
-tags: [paper]
+tags: [论文]
 cover: https://s1.ax1x.com/2021/12/09/oW7yad.jpg
 mathjax: true
 ---

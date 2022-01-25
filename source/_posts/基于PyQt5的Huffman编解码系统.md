@@ -1,5 +1,5 @@
 ---
-title: 基于PyQt5的Huffman编解码系统
+title: 【数据结构】基于PyQt5的Huffman编解码系统
 date: 2020-7-4
 tags: [数据结构,Qt,Python]
 cover: https://s4.ax1x.com/2022/01/12/7ni2RK.jpg

@@ -1,5 +1,5 @@
 ---
-title: ELF文件解析
+title: 【Linux】ELF文件解析
 date: 2021-12-10
 tags: [Linux,C++]
 cover: https://s1.ax1x.com/2021/12/10/o4h8kn.jpg
