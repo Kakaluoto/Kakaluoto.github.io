@@ -1,5 +1,5 @@
 ---
-title: 【论文】英文论文套话
+title: 【论文】英文摘抄
 date: 2021-11-14
 tags: [论文]
 cover: https://s1.ax1x.com/2021/12/09/oW7yad.jpg
@@ -22,6 +22,10 @@ In this survey paper, we aim to provide a timely and comprehensive literature re
 
 In the context of DG,(就DG而言)
 
+There has been a lively interest since pansharpening in the last few decades.
+
+They are generally superior to the CS class in preserving spectral contents but suffer from spatial distortion.
+
 ### 3. Related work
 
 
@@ -42,11 +46,8 @@ In the context of DG,(就DG而言)
 
 
 
-## 二. 替换词
+## 二. 常用词汇
 
-### 1. To Be Continued~
-未完待续~
-### 2. To Be Continued~
-未完待续~
-### 3. To Be Continued~
-未完待续~
++ exploiting image characteristic 提取图像特征
++ learn the mapping between 学习A与B之间的映射
++ are solely based on 仅仅基于
