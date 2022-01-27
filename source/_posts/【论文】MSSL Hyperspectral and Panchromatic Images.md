@@ -24,5 +24,3 @@ HS和PAN图像融合，也被称为HS pansharpening。
 
 主要有四类: component substitution (CS), multiresolution analysis (MRA), Bayesian, and matrix factorization.
 
-### 2. 与指针的异同
-引用能做的指针都能做，指针比引用更为强大，且指针是实际存在的变量。
