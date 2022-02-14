@@ -2,7 +2,7 @@
 title: 【论文】英文摘抄
 date: 2021-11-14
 tags: [论文]
-cover: https://s1.ax1x.com/2021/12/09/oW7yad.jpg
+cover: https://www.helloimg.com/images/2022/02/14/Gg1UpQ.webp
 mathjax: true
 ---
 

@@ -2,7 +2,7 @@
 title: 【机器学习】推荐系统 Factorization Machines 因子分解机
 date: 2021-11-30
 tags: [机器学习,推荐系统]
-cover: https://s1.ax1x.com/2021/12/09/oW7RRP.jpg
+cover: https://www.helloimg.com/images/2022/02/14/Gg18oS.webp
 mathjax: true
 ---
 

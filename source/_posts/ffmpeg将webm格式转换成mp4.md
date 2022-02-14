@@ -2,7 +2,7 @@
 title: 【多媒体】ffmpeg将webm格式转换成mp4
 date: 2021-10-25
 tags: [多媒体,ffmpeg]
-cover: https://s4.ax1x.com/2022/01/12/7nSAMj.jpg
+cover: https://www.helloimg.com/images/2022/02/14/Gg1D2o.webp
 mathjax: true
 ---
 

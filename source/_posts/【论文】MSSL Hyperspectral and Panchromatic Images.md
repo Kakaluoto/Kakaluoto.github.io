@@ -2,7 +2,7 @@
 title: 【论文】MSSL Hyperspectral and Panchromatic Images Fusion via Multiresolution Spatial–Spectral Feature Learning Networks
 date: 2022-1-25
 tags: [论文,机器学习]
-cover: https://s4.ax1x.com/2022/01/25/7bJfeA.jpg
+cover: https://www.helloimg.com/images/2022/02/14/Gg3CzP.webp
 mathjax: true
 ---
 

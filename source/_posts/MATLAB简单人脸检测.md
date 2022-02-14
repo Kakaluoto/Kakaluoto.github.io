@@ -2,7 +2,7 @@
 title: 【图像处理】MATLAB简单人脸检测
 date: 2020-5-3
 tags: [MATLAB,图像处理]
-cover: https://s4.ax1x.com/2022/01/12/7nPOb9.jpg
+cover: https://www.helloimg.com/images/2022/02/14/Gg1Qd1.webp
 mathjax: true
 ---
 
