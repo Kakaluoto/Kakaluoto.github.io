@@ -2,7 +2,7 @@
 title: 【Linux】ELF文件解析
 date: 2021-12-10
 tags: [Linux,C++]
-cover: https://s1.ax1x.com/2021/12/10/o4h8kn.jpg
+cover: https://www.helloimg.com/images/2022/02/15/GgsjTt.webp
 mathjax: true
 ---
 
