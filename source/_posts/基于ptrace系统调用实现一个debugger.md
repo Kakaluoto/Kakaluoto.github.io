@@ -379,7 +379,7 @@ int main() {
 }
 ```
 
-### 5.2 关闭ASLP脚本
+### 5.2 关闭ASLR脚本
 
 ```shell
 #!/bin/bash
