@@ -43,7 +43,7 @@ def compute_Tn(func, x_min=0, x_max=1, epoch=10):
     for k in range(epoch + 1):
         if k == 0:  # 初始步长h=h0,取两个端点
             Tn = 0.5 * h * (func(x_min) + func(x_max))  # T1
-            Tn_list.append({"T_%d" % 2 ** k: Tn, "k": k})
+            Tn_list.append({"T_%d" % 2 ** k: Tn.item(), "k": k})
             x_half_list = np.array([(x_min + x_max) / 2])  # 计算二分点
         else:
             Tn = 0.5 * Tn + 0.5 * h * np.sum(func(x_half_list))  # 上一轮的T2n = 0.5*Tn + 0.5*h*二分点处的函数值之和
