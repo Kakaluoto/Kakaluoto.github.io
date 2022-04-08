@@ -87,7 +87,7 @@ def compute_Rn(Tn_list=None, Cn_list=None):
         Rn_list.append({"R_%d" % 2 ** (k - 3): Rn, "k": k})
     return Rn_list
 
-# 
+
 def sinx_div_x(x):
     y = np.sin(x) / x
     if not isinstance(y, np.ndarray):
@@ -110,7 +110,7 @@ def inverse(x):
 
 
 if __name__ == '__main__':
-    Tn_list = compute_Tn(sinx_div_x, x_min=-1e8, x_max=1e8, epoch=28)
+    Tn_list = compute_Tn(sinx_div_x, x_min=0, x_max=1, epoch=24)
     print(Tn_list)
     Sn_list = compute_Sn(Tn_list)
     print(Sn_list)
@@ -120,6 +120,4 @@ if __name__ == '__main__':
     print(Rn_list)
 
 ```
-
-![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
 
