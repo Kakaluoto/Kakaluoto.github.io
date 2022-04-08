@@ -87,7 +87,7 @@ def compute_Rn(Tn_list=None, Cn_list=None):
         Rn_list.append({"R_%d" % 2 ** (k - 3): Rn, "k": k})
     return Rn_list
 
-
+# 测试用函数
 def sinx_div_x(x):
     y = np.sin(x) / x
     if not isinstance(y, np.ndarray):
@@ -95,18 +95,6 @@ def sinx_div_x(x):
     y[np.where(np.isnan(y))] = 1
     return y
 
-
-def x_mul_sinx(x):
-    y = x * math.sin(x)
-    return y
-
-
-def e_x_mul_sinx(x):
-    return (math.e ** x) * math.sin(x)
-
-
-def inverse(x):
-    return 1 / x
 
 
 if __name__ == '__main__':
