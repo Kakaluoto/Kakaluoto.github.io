@@ -1,7 +1,7 @@
 ---
 title: 【目标检测】YOLOv1-v3学习笔记
 date: 2022-11-18
-tags: [机器学习,目标检测，YOLO]
+tags: [机器学习,目标检测,YOLO,论文]
 cover: https://cdnjson.com/images/2022/11/18/2022_04_24_4.jpg
 mathjax: true
 ---
