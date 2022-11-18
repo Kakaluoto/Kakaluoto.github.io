@@ -176,9 +176,9 @@ YOLOv3在通过主干网络darknet53之后，通过两次上采样来获得三�
 
 ### 4.4 DIoU Loss
 
-![image-20221102204345191](https://www.helloimg.com/images/2022/11/18/ZhvIsQ.png)
+![image-20221102204345191](https://z4a.net/images/2022/11/18/image-20221102204345191.png)
 
-![image-20221102205224865](https://www.helloimg.com/images/2022/11/18/Zhv6vt.png)
+![image-20221102205224865](https://z4a.net/images/2022/11/18/image-20221102205224865.png)
 
 ### 4.5 CIoU Loss
 
