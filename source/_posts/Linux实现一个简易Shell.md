@@ -2,7 +2,7 @@
 title: 【Linux】Linux实现一个简易shell
 date: 2022-2-22
 tags: [Linux]
-cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171704989.png
+cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212172018123.webp
 mathjax: true
 ---
 

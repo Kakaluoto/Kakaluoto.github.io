@@ -2,7 +2,7 @@
 title: 【数据结构】基于PyQt5的Huffman编解码系统
 date: 2020-7-4
 tags: [数据结构,Qt,Python]
-cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171714769.png
+cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212172024111.webp
 mathjax: true
 ---
 

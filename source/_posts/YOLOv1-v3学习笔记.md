@@ -2,7 +2,7 @@
 title: 【目标检测】YOLOv1-v3学习笔记
 date: 2022-11-18
 tags: [机器学习,目标检测,YOLO,论文]
-cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171711140.jpeg
+cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212172022770.webp
 mathjax: true
 ---
 # YOLOv1-v3学习笔记

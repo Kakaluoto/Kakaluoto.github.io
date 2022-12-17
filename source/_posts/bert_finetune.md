@@ -2,7 +2,7 @@
 title: 【机器学习】Bert微调
 date: 2021-11-20
 tags: [机器学习,NLP]
-cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171658683.png
+cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212172011962.webp
 mathjax: true
 ---
 

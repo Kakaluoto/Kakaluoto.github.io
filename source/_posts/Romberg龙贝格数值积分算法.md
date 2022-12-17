@@ -2,7 +2,7 @@
 title: 【数值分析】Romberg数值积分
 date: 2022-4-8
 tags: [数值分析,Python]
-cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171706794.png
+cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212172020087.webp
 mathjax: true
 ---
 

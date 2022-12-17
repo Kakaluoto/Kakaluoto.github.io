@@ -2,7 +2,7 @@
 title: 【Linux】基于ptrace系统调用实现一个debugger
 date: 2022-2-22
 tags: [Linux,c++]
-cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171713716.png
+cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212172023986.webp
 mathjax: true
 ---
 # 基于ptrace的debugger设计

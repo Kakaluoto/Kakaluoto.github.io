@@ -2,7 +2,7 @@
 title: 【博客】Hexo在多台电脑上提交和更新
 date: 2022-1-10
 tags: [hexo,Git]
-cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171703140.png
+cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212172017957.webp
 mathjax: true
 ---
 

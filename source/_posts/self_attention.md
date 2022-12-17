@@ -2,7 +2,7 @@
 title: 【机器学习】自注意力
 date: 2021-10-14 01:20:47
 tags: [机器学习,attention]
-cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171709788.png
+cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212172021723.webp
 mathjax: true
 ---
 
