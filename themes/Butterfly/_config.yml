@@ -101,18 +101,18 @@ katex:
 # --------------------------------------
 
 # Favicon（網站圖標）
-favicon: https://z3.ax1x.com/2021/10/27/5b8HIA.png
+favicon: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171725027.png
 
 # Avatar (頭像)
 avatar:
-  img: https://www.helloimg.com/images/2022/02/15/GgsVvS.webp
+  img: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171726052.png
   effect: false
 
 # Disable all banner image
 disable_top_img: false
 
 # The banner image of home page
-index_img: https://www.helloimg.com/images/2022/02/15/GgsheQ.webp
+index_img: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171726431.webp
 
 # If the banner of page not setting, it will show the top_img
 default_top_img: false
@@ -668,7 +668,7 @@ aside:
       link: https://github.com/Kakaluoto
   card_announcement:
     enable: true
-    content: <img src="https://www.helloimg.com/images/2022/02/15/GgtBnE.gif">
+    content: <img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171728602.gif">
   card_recent_post:
     enable: true
     limit: 5 # if set 0 will show all
