@@ -2,13 +2,13 @@
 title: 【图像处理】MATLAB简单人脸检测
 date: 2020-5-3
 tags: [MATLAB,图像处理]
-cover: https://www.helloimg.com/images/2022/02/14/Gg1Qd1.webp
+cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171705967.png
 mathjax: true
 ---
 
 ##  1.人脸检测原理框图
 
-![img](https://s4.ax1x.com/2022/01/12/7npunA.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
+![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171705537.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
 
 
 
@@ -118,7 +118,7 @@ end
 
 Div是均分比例，我这里设置成10，也就是将整个图像划分成100个小块。r就是在行方向上一个小块占多少像素，c就是在列方向上一个小块有多少像素。用两层循环来遍历每个小块，通过find(x1:x2,y1:y2)==0返回所有满足要求的像素的索引，索引长度就是黑色像素的个数。
 
-![img](https://s4.ax1x.com/2022/01/12/7npYcQ.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
+![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171705088.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
 
 通过条件判断是否在边界。
 
@@ -151,30 +151,30 @@ title('人脸检测')
 
 调用regionprops(L,’BoundingBox’)函数，传入参数L和’BoundingBox’，该函数用于获取图像的各种属性，传入’BoundingBox’返回的是一个结构体，每一个结构体内都包含了一个能框柱其对应连通域的最小方框。一个方框，用一个序列来描述[x,y,width,height]，这个序列包含了方框左上角像素的坐标以及长和宽。
 
-![img](https://s4.ax1x.com/2022/01/12/7npy3F.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
+![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171705913.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
 
 这三条语句，第一条用来将结构体转换成矩阵向量，方便计算。第二行获取这个矩阵的维度。由于BB刚转换成向量的时候，是一个行向量，每4个元素1组对应一个方框。为了后续计算方便，使用reshape()函数，将BB重构成一个矩阵，这个矩阵有4列，每一列对应方框的一个参数，比如坐标，长宽等等。每一行对应一个方框。
 
-![img](https://s4.ax1x.com/2022/01/12/7npcjJ.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
+![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171705141.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
 
 第一行计算长宽比，得到的pickshape向量的每一行对应每个方框的长宽比。由于有的方框明显过于扁平或者过于狭长，这种方框应该是要扔掉的。
 
 所以第二行，通过逻辑表达式从BB内筛选出尺寸比例合格的方框，存在shapeind里面。
  剩下的尺寸符合要求的方框里面要选出面积最大的那个，最后一行，得到面积最大的方框对应的索引。
 
-![img](https://s4.ax1x.com/2022/01/12/7np2u9.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
+![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171705367.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
 
 把方框画出来。
 
 #   3 检测结果
 
-![img](https://s4.ax1x.com/2022/01/12/7npWH1.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)![img](https://s4.ax1x.com/2022/01/12/7npo9O.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
+![img](https://s4.ax1x.com/2022/01/12/7npWH1.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171705681.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
 
 图 15rgb图像转换成灰度图像         图 16线性均值滤波结果
 
 可以看到，均值滤波使得图像变模糊了细节减少
 
-![img](https://s4.ax1x.com/2022/01/12/7npHjH.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
+![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171705473.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
 
 图 17二值化结果                   图 18形态学边界提取结果
 
@@ -185,53 +185,53 @@ title('人脸检测')
 
  可以看到，进行边界加粗和空洞添补之后，眼睛部分的黑块被消除了，这使得脸部连通域更大了
 
-![img](https://s4.ax1x.com/2022/01/12/7npjEt.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
+![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171705658.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
 
 注意观察图片左边的相分离的白块，在纵向闭操作之后连在了一起，同时脸部连通域进一步扩大，然后横向腐蚀在尽量维持脸部连通域大小的情况下减小了图片下方连通域。
 
-![img](https://s4.ax1x.com/2022/01/12/7npvUP.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
+![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171706690.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
 
 
 
 可以看到效果还可以。还有其他的测试结果
 
-![img](https://s4.ax1x.com/2022/01/12/7n9EEq.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
+![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171706766.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
 
 
 
 图 24测试样例
 
-![img](https://s4.ax1x.com/2022/01/12/7n9TI0.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
+![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171706233.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
 
 
 
 图 25测试样例
 
-![img](https://s4.ax1x.com/2022/01/12/7nP0AI.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
+![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171706396.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
 
 
 
 图 26测试样例
 
-![img](https://s4.ax1x.com/2022/01/12/7nP6gS.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
+![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171706231.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
 
 
 
 图 27测试样例
 
-![img](https://s4.ax1x.com/2022/01/12/7nP2uQ.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
+![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171706654.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
 
 
 
 图 28测试样例
 
-![img](https://s4.ax1x.com/2022/01/12/7nPRBj.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
+![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171706167.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
 
 
 
 图 29测试样例
 
-![img](https://s4.ax1x.com/2022/01/12/7nPHvF.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
+![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171706730.png)![点击并拖拽以移动](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171706730.png)
 
 
 

@@ -2,7 +2,7 @@
 title: 【Linux】Linux实现一个简易shell
 date: 2022-2-22
 tags: [Linux]
-cover: https://www.helloimg.com/images/2022/02/22/GraTAc.webp
+cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171704989.png
 mathjax: true
 ---
 

@@ -2,7 +2,7 @@
 title: 【机器学习】推荐系统 Factorization Machines 因子分解机
 date: 2021-11-30
 tags: [机器学习,推荐系统]
-cover: https://www.helloimg.com/images/2022/02/14/Gg18oS.webp
+cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171702342.png
 mathjax: true
 ---
 
@@ -16,7 +16,7 @@ mathjax: true
 
 ## 1.因子分解机的演变
 传统的推荐模型
-![img](https://pic4.zhimg.com/80/v2-bd724d20893bb295c5107411397ed197_720w.jpg)
+![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171702148.jpeg)
 
 上图是传统的推荐系统模型的分类，逻辑回归LR模型在传统的推荐模型中占据着非常重要的位置。而因子分解机的出现，也来源于**逻辑回归和矩阵分解**的演化。
 
@@ -43,7 +43,7 @@ $$
 
 用户对电影打分的onehot编码
 
-![img](https://pic1.zhimg.com/80/v2-a3c949bc9467e00b578f81c81108b4b0_720w.jpg)
+![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171702828.jpeg)
 
 上图是电影背景下，用户对电影打分的onehot编码形式。每行代表一个样本，每列都代表一个特征。同时特征可以分为五个部分：用户ID，电影ID，用户对其他电影的打分（归一化），时间信息，以及对上一次电影的打分。
 
@@ -93,11 +93,11 @@ $$
 $$
 \large \sum_{i=1}^{n} \sum_{j=i+1}^{n}\left\langle\mathbf{v}_{i}, \mathbf{v}_{j}\right\rangle x_{i} x_{j} \tag{6}
 $$
-![img](https://pic1.zhimg.com/80/v2-c3984c164afcb18d65ce0b3ad5f41b74_720w.jpg)
+![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171702081.jpeg)
 
 首先矩阵A中的上三角，红色方框部分代表公式（6），也就是因子分解机中二阶交叉项部分。由图可以看出，他是矩阵的全部元素减去对角线元素之和得到的, 即：
 
-![img](https://pic1.zhimg.com/80/v2-3fa1f4caf873a21f6a9e59fdb769c3c0_720w.jpg)
+![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171702370.png)
 
 $$
 \large \sum_{i=1}^{n} \sum_{j=i+1}^{n}\left\langle\mathbf{v}_{i}, \mathbf{v}_{j}\right\rangle x_{i} x_{j}=\frac{1}{2}\left(\sum_{i=1}^{n} \sum_{j=1}^{n}\left\langle\mathbf{v}_{i}, \mathbf{v}_{j}\right\rangle x_{i} x_{j}-\sum_{i=1}^{n}\left\langle\mathbf{v}_{i}, \mathbf{v}_{i}\right\rangle x_{i} x_{i}\right)

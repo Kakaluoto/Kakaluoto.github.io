@@ -2,7 +2,7 @@
 title: 【论文】英文摘抄
 date: 2021-11-14
 tags: [论文]
-cover: https://www.helloimg.com/images/2022/02/14/Gg1UpQ.webp
+cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171701724.png
 mathjax: true
 ---
 

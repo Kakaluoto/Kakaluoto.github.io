@@ -2,7 +2,7 @@
 title: 【C++】CMake使用示例与整理总结
 date: 2021-11-25 
 tags: [C++,CMake,Linux]
-cover: https://www.helloimg.com/images/2022/02/14/Gg1YYE.webp
+cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171700940.png
 ---
 
 # 一. CMake使用示例与整理总结

@@ -2,7 +2,7 @@
 title: 【博客】Hexo在多台电脑上提交和更新
 date: 2022-1-10
 tags: [hexo,Git]
-cover: https://www.helloimg.com/images/2022/02/14/Gg1pVK.webp
+cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171703140.png
 mathjax: true
 ---
 
@@ -17,7 +17,7 @@ mathjax: true
 
 这是老电脑上的目录结构
 
-![](https://s4.ax1x.com/2022/01/10/7EKIeg.png)
+![](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171703193.png)
 
 | 文件夹        | 说明                                                         | 是否需要上传github |
 | :------------ | ------------------------------------------------------------ | :----------------- |
@@ -57,7 +57,7 @@ deploy:
 
 因此，hexo生成的静态博客文件默认放在master分支上。hexo的源文件（部署环境文件）可以都放在source分支上（可以新创建一个source分支）。然后把source分支设置成默认分支。有小伙伴可能会担心默认分支的改变会不会影响到原来的网页的正常显示，其实如果是用GitHub Pages对博客进行托管的话也很简单，第一次搭建博客默认使用master分支作为页面。在下图所示的设置里可以找到。如果不小心搞错了只要把分支设置成静态页面对应的分支就好了。
 
-![](https://s4.ax1x.com/2022/01/10/7EYj6s.png)
+![](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171704332.png)
 
 把source分支设置成默认分支，用来存放源文件，master分支依然存放静态文件。在**老电脑**上，我们需要把必要的源文件push到source分支。换**新电脑**时，直接`git clone 仓库地址 `此时会从source分支下载源文件，剩下的就是安装hexo环境，在**新电脑**上就可以重新生成静态页面了，并且因为配置文件clone下来，deploy配置依旧是master分支，所以在**新电脑**上执行`hexo d`还是会把更新过后的静态文件推送到master分支上。
 
@@ -73,11 +73,11 @@ deploy:
 
 先创建一个分支hexo
 
-![img](https://s4.ax1x.com/2022/01/10/7VVsAI.jpg)
+![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171704027.jpeg)
 
 将其设置为默认分支
 
-![img](https://s4.ax1x.com/2022/01/10/7VZpU1.jpg)
+![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171704140.jpeg)
 
 **2.打包将要推送到GitHub上的原始文件**
 

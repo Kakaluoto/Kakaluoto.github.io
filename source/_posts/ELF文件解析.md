@@ -2,7 +2,7 @@
 title: 【Linux】ELF文件解析
 date: 2021-12-10
 tags: [Linux,C++]
-cover: https://www.helloimg.com/images/2022/02/15/GgsjTt.webp
+cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171701494.png
 mathjax: true
 ---
 
@@ -23,7 +23,7 @@ mathjax: true
 + 共享库文件：在动态链接的时候，由 ld-linux.so 来读取;
   
 
-<img src="https://s1.ax1x.com/2021/12/09/o4yN4S.png" alt="img" style="zoom:80%;" />
+<img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171700566.png" alt="img" style="zoom:80%;" />
 
 ## 2.readelf命令
 

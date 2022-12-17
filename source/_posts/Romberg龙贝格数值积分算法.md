@@ -2,7 +2,7 @@
 title: 【数值分析】Romberg数值积分
 date: 2022-4-8
 tags: [数值分析,Python]
-cover: https://www.helloimg.com/images/2022/04/08/RsWI7o.webp
+cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171706794.png
 mathjax: true
 ---
 
@@ -10,15 +10,15 @@ mathjax: true
 
 ## 1. 原理与公式
 
-<img src="https://www.helloimg.com/images/2022/04/08/RsWWn5.png" style="zoom: 80%;" />
+<img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171707594.png" style="zoom: 80%;" />
 
-<img src="https://www.helloimg.com/images/2022/04/08/RsWcBm.png" style="zoom:80%;" />
+<img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171708349.png" style="zoom:80%;" />
 
-<img src="https://www.helloimg.com/images/2022/04/08/RsWvvc.png" style="zoom:80%;" />
+<img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171708569.png" style="zoom:80%;" />
 
-<img src="https://www.helloimg.com/images/2022/04/08/RsWNer.png" style="zoom:80%;" />
+<img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171708631.png" style="zoom:80%;" />
 
-<img src="https://www.helloimg.com/images/2022/04/08/RsWQTT.png" style="zoom:80%;" />
+<img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171709798.png" style="zoom:80%;" />
 
 ## 2. Python代码实现
 

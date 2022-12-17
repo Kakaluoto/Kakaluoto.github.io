@@ -2,7 +2,7 @@
 title: 【爬虫】使用baiduspider实现一个异步爬虫
 date: 2022-5-14
 tags: [python,爬虫]
-cover: https://www.helloimg.com/images/2022/05/14/R605Au.webp
+cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171656832.webp
 mathjax: true
 ---
 代码仓库：https://github.com/Kakaluoto/asnyc_spider

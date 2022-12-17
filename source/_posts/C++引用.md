@@ -2,7 +2,7 @@
 title: 【C++】C++引用
 date: 2021-11-27
 tags: [C++]
-cover: https://www.helloimg.com/images/2022/02/14/Gg1hXY.webp
+cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171659934.webp
 mathjax: true
 ---
 

@@ -2,7 +2,7 @@
 title: 【机器学习】自注意力
 date: 2021-10-14 01:20:47
 tags: [机器学习,attention]
-cover: https://www.helloimg.com/images/2022/02/14/Gg1NmT.webp
+cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171709788.png
 mathjax: true
 ---
 
@@ -20,18 +20,18 @@ $$\mathbf{y}_{1}, \ldots, \mathbf{y}_{n}$$
 $$\mathbf{y}_{i}=f\left(\mathbf{x}_{i},\left(\mathbf{x}_{1}, \mathbf{x}_{1}\right), \ldots,\left(\mathbf{x}_{n}, \mathbf{x}_{n}\right)\right) \in \mathbb{R}^{d}$$
 xi作为query，key-value对包含了所有的xi对，对应序列中的每一个元素xi都会输出一个yi。
 
-[![f4TBZ9.png](https://z3.ax1x.com/2021/08/17/f4TBZ9.png)](https://imgtu.com/i/f4TBZ9)
+[![f4TBZ9.png](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171709274.png)](https://imgtu.com/i/f4TBZ9)
 
 ## 2. 与CNN,RNN对比
 
-[![f4q77Q.png](https://z3.ax1x.com/2021/08/17/f4q77Q.png)](https://imgtu.com/i/f4q77Q)
+[![f4q77Q.png](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171709628.png)](https://imgtu.com/i/f4q77Q)
 
 对于CNN，k就是指卷积核的大小，n是输入数据量，d是指数据维度，并行度就是说每个输出之间可以各自独立运算出结果，第一个输出的结果不取决于上一个输出，这样的话就很方便进行并行的计算，大家可以同时计算，这样的计算效率就比较高。
-[![f4OIoQ.png](https://z3.ax1x.com/2021/08/17/f4OIoQ.png)](https://imgtu.com/i/f4OIoQ)
+[![f4OIoQ.png](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171709132.png)](https://imgtu.com/i/f4OIoQ)
 
 最长路径我理解的是输入信息在前向计算和反向传播过程中影响到另一个输入所需要走过的最长路径。
 
-[![f4quYn.png](https://z3.ax1x.com/2021/08/17/f4quYn.png)](https://imgtu.com/i/f4quYn)
+[![f4quYn.png](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171710321.png)](https://imgtu.com/i/f4quYn)
 
 自注意力的计算复杂度比较高，尤其是输入序列较长的时候，根据之前计算yi的公式，我们需要把序列中的每个元素都进行计算，这带来了比较大的计算负担。但是最大路径很短，这在网路示意图中可以很明显的看到，当序列很长的时候可以很快获取到距离比较远的信息。且相较于RNN多级传递可以有较少的信息损失。
 
@@ -43,7 +43,7 @@ xi作为query，key-value对包含了所有的xi对，对应序列中的每一�
 
 跟CNN和RNN不同，自注意力并没有记录位置信息。
 
-[<img src="https://z3.ax1x.com/2021/08/17/f5pDXR.png" alt="f5pDXR.png" style="zoom:50%;" />](https://imgtu.com/i/f5pDXR)
+[<img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171710457.png" alt="f5pDXR.png" style="zoom:50%;" />](https://imgtu.com/i/f5pDXR)
 
 
 
@@ -63,7 +63,7 @@ i代表序列的第几个元素，即所谓的位置，j代表第几个特征维
 
 这是位置矩阵的图像。
 
-[<img src="https://z3.ax1x.com/2021/08/17/f5PQpD.png" alt="f5PQpD.png"  />](https://imgtu.com/i/f5PQpD)
+[<img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171710409.png" alt="f5PQpD.png"  />](https://imgtu.com/i/f5PQpD)
 
 途中的Row(position)对应的是位置矩阵的n，即第几个元素，不同的col列对应不同的特征维度。
 
@@ -77,7 +77,7 @@ i代表序列的第几个元素，即所谓的位置，j代表第几个特征维
 
 
 
-[<img src="https://z3.ax1x.com/2021/08/17/f5Abse.png" alt="f5Abse.png" style="zoom: 80%;" />](https://imgtu.com/i/f5Abse)
+[<img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171710408.png" alt="f5Abse.png" style="zoom: 80%;" />](https://imgtu.com/i/f5Abse)
 
 #### 绝对位置信息
 
@@ -96,7 +96,7 @@ i代表序列的第几个元素，即所谓的位置，j代表第几个特征维
 
 我们也可以将$0~7$这个序列的每个元素都由长度为3的特征表示，低位的特征变化频率就比高位的变化要快。
 
-[![f5mh3q.png](https://z3.ax1x.com/2021/08/17/f5mh3q.png)](https://imgtu.com/i/f5mh3q)
+[![f5mh3q.png](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171710776.png)](https://imgtu.com/i/f5mh3q)
 
 #### 相对位置信息
 
@@ -110,7 +110,7 @@ $\left[\begin{array}{cc}\cos \left(\delta \omega_{j}\right) & \sin \left(\delta 
 
 其实也可以用相位差来类比，正弦信号相乘会引起相位变化。
 
-[![f5Kkct.md.jpg](https://z3.ax1x.com/2021/08/17/f5Kkct.md.jpg)](https://imgtu.com/i/f5Kkct)
+[![f5Kkct.md.jpg](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171710421.jpeg)](https://imgtu.com/i/f5Kkct)
 
 可以看到，在与投影矩阵相乘之后，原来的正弦函数发生了相位偏移。
 

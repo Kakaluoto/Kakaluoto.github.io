@@ -2,7 +2,7 @@
 title: 【Linux】基于ptrace系统调用实现一个debugger
 date: 2022-2-22
 tags: [Linux,c++]
-cover: https://www.helloimg.com/images/2022/02/22/Gr1Crz.webp
+cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171713716.png
 mathjax: true
 ---
 # 基于ptrace的debugger设计
@@ -33,7 +33,7 @@ ptrace的第一个参数可以通过指定request请求来实现不同的功能�
 
 给进程打断点的实现最为困难，本次设计仅针对进程特定地址进行插入断点。可以使用Ptrace的PTRACE_PEEKDATA，PTRACE_POKEDATA两个请求，来在进程指定的地址读出指令和注入新的指令。因此可以在指定的地址插入int3(0xcc)中断指令实现断点，为了让插入断点的进程依然能够恢复运行，在插入断点之前对该地址原有指令进行备份，遇到断点之后再将备份的指令还原，并且恢复命中断点时的寄存器值，尤其是rip指针需要减1，回退一个地址。
 
-![](https://www.helloimg.com/images/2022/02/22/Gra7LC.png)
+![](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171713946.png)
 
 过程如上图所示，第一步rip先指向byte2对应地址处，利用PTRACE_PEEKDATA将byte2,byte3取出备份，同时保存当前寄存器值，为恢复做备份。第二步插入0xcc,0x00指令，即int3中断指令，执行一步来到第三步rip指向0x00，触发中断，子进程暂停。第四步，为了让子进程继续运行，将备份的原始指令写入rip-1处，并且利用PTRACE_SETREGS将寄存器值恢复成原来的值，此时rip跟着上移。这样子进程可以继续正常运行不会core dump。以上四步构成了在byte2对应地址处打上断点的操作。
 

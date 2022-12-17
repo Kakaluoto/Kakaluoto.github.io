@@ -2,7 +2,7 @@
 title: 【机器学习】Bert微调
 date: 2021-11-20
 tags: [机器学习,NLP]
-cover: https://www.helloimg.com/images/2022/02/14/Gg3BiM.webp
+cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171658683.png
 mathjax: true
 ---
 
@@ -33,7 +33,7 @@ mathjax: true
 
 Transformer就是结合了自注意力机制的encoder-decoder网络。
 
-<img src="https://s1.ax1x.com/2021/12/09/oWsq8s.jpg" style="zoom: 80%;" />
+<img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171658412.jpeg" style="zoom: 80%;" />
 
 图的左边是Encoder右边是Decoder
 
@@ -57,7 +57,7 @@ Transformer就是结合了自注意力机制的encoder-decoder网络。
 
 下图更加直观地展示了BERT与Transformer之间的关系。
 
-<img src="https://z3.ax1x.com/2021/11/16/IhZNXn.jpg" style="zoom:80%;" />
+<img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171658907.jpeg" style="zoom:80%;" />
 BERT将Transformer的编码器部分进行叠加。
 
 论文中的BERT提供了简单和复杂两个模型，对应的超参数分别如下：
@@ -70,18 +70,18 @@ BERT将Transformer的编码器部分进行叠加。
 ##  三. BERT预训练
 ### 1. 关于自监督学习Self-supervised-learning
 
-<img src="https://z3.ax1x.com/2021/11/16/IhZyp4.png" style="zoom:67%;" />
+<img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171658594.png" style="zoom:67%;" />
 自监督学习与监督学习的区别在于标签并不是特意标注的，而是通过训练数据集自己产生的，而BERT可以看作是一种自监督学习模型，即BERT在进行与训练的时候所用的标签其实就是来自与文本数据自身。
 
 具体是如何做到的呢？主要是通过两个预训练任务的设计来实现的，一个是MLM(Masked Language Model),另一个是NSP(Next Sentence Prediction),这个之后再解释。
 
 ### 2. BERT输入表示
 
-<img src="https://z3.ax1x.com/2021/11/16/IhZbjA.jpg" style="zoom: 80%;" />
+<img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171658642.jpeg" style="zoom: 80%;" />
 
 BERT的输入为每一个token对应的表征*（图中的粉红色块就是token，黄色块就是token对应的表征）*，并且单词字典是采用WordPiece算法来进行构建的。
 
-<img src="https://z3.ax1x.com/2021/11/16/Ihep9g.jpg"  />
+<img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171658947.jpeg"  />
 
 每一个token对应的表征组成一个编码向量（长度是512），该编码向量是3个嵌入特征的单位和，这三个词嵌入特征是：
 
@@ -107,7 +107,7 @@ BERT的输入为每一个token对应的表征*（图中的粉红色块就是toke
 
 ​        mask的好处，即预测一个词汇时，模型并不知道输入对应位置的词汇是否为正确的词汇（ 10% 概率），这就迫使模型更多地依赖于上下文信息去预测词汇，并且赋予了模型一定的纠错能力。
 
-<img src="https://z3.ax1x.com/2021/11/16/IheVEV.png" style="zoom: 50%;" />
+<img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171658945.png" style="zoom: 50%;" />
 
 这个mask可以是特殊符号‘<mask>’也可以是随机选取一些乱七八糟的符号，又或者是原来正确的符号。
 
@@ -131,7 +131,7 @@ BERT的输入为每一个token对应的表征*（图中的粉红色块就是toke
 	+ 50%概率选择随机句子对:<cls>this movie is great <seq>hello world<sep>
 	+ 将<cls>对应的输出放到一个全连接层来预测
 
-<img src="https://z3.ax1x.com/2021/11/16/Iheu34.png" style="zoom: 50%;" />
+<img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171659492.png" style="zoom: 50%;" />
 
 ​       关于NSP是否有用是存在争议的，(参见RoBERTa这篇论文)。因为选定一个句子作为前一个句子，大部分情况下随机选到的句子都不是后一个句子，也就是BERT是很容易判断出来两个句子是否相邻的。对此也有人提出了改进方法SOP，SOP更加侧重于判断两个句子的前后关系，而不是两个句子是否相邻。
 
@@ -171,7 +171,7 @@ BERT的输入为每一个token对应的表征*（图中的粉红色块就是toke
 
 ​        BERT在预训练好之后就可以通过更改输出层来完成不同的任务，本节所讲的fine-tune应用是自然语言推理Natural Language Inference
 
-<img src="https://z3.ax1x.com/2021/11/16/IheluR.png" style="zoom: 80%;" />
+<img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171659848.png" style="zoom: 80%;" />
 
 本次微调所用的输出层很简单，直接在BERT输出层添加一个多层感知机。
 
