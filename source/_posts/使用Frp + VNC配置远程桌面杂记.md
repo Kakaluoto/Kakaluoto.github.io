@@ -1,6 +1,6 @@
 ---
 title: 【内网穿透】使用Frp + VNC配置远程桌面杂记
-date: 2022-1-4
+date: 2023-1-4
 tags: [内网穿透，Frp]
 cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/16631.webp
 mathjax: true
