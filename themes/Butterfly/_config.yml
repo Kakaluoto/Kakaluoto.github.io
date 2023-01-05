@@ -667,7 +667,7 @@ aside:
       text: Follow Me
       link: https://github.com/Kakaluoto
   card_announcement:
-    enable: true
+    enable: false
     content: <img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171728602.gif">
     # content: <img src="https://ghchart.rshah.org/kakaluoto" alt="???'s Github chart" />
   card_recent_post:
