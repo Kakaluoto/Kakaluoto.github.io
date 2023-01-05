@@ -18,7 +18,7 @@ mathjax: true
 ### 3.1 离散测度 (Discrete measures)
 首先，说一下概率向量（或者称为直方图，英文：Histograms， probability vector）的定义：
 
- ![img](https://img2020.cnblogs.com/blog/927750/202103/927750-20210312164410898-507060181.png)
+ ![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/927750-20210312164410898-507060181.png)
 
 上述公式的含义：一个长度为n的数组，每个元素的值在[0, 1]之间，并且该数组的和为1，即表示的是一个概率分布向量。
 
@@ -26,11 +26,11 @@ mathjax: true
 
 离散测度：所谓测度就是一个函数，把一个集合中的一些子集（符合上述概率分布向量）对应给一个数[4]。具体公式定义如下：
 
-![img](https://img2020.cnblogs.com/blog/927750/202103/927750-20210312164427933-960804036.png)
+![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/927750-20210312164427933-960804036.png)
 
 上述公式含义：以$a_i$为概率和对应位置$x_i$的狄拉克δ函数值乘积的累加和。下图很好地阐述了一组不同元素点的概率向量分布：
 
- ![img](https://img2020.cnblogs.com/blog/927750/202103/927750-20210312164445217-1263610359.png)
+ ![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/927750-20210312164445217-1263610359.png)
 
 上图中红色点是均匀的概率分布，蓝色点是任意的概率分布。点状分布对应是一维数据的概率向量分布，而点云状分布对应的是二维数据的概率向量分布。
 
@@ -38,23 +38,23 @@ mathjax: true
 
 蒙日(Monge)问题的定义：找出从一个 measure(测度)到另一个measure的映射，使得所有$c ( x_i , y_j )$的和最小，其中$c$表示映射路线的运输代价，需要根据具体应用定义。蒙日问题具体的定义公式如下：
 
- ![img](https://img2020.cnblogs.com/blog/927750/202103/927750-20210312164508270-1219532574.png)
+ ![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/927750-20210312164508270-1219532574.png)
 
 对于上述公式的解释可以采用离散测度来解释，对于两个离散测度：
 
- ![img](https://img2020.cnblogs.com/blog/927750/202103/927750-20210312164519132-1669442012.png)
+ ![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/927750-20210312164519132-1669442012.png)
 
 找到一个n维映射到m维的一个映射![img](https://img2020.cnblogs.com/blog/927750/202103/927750-20210312164530094-298942662.png)，使得
 
- ![img](https://img2020.cnblogs.com/blog/927750/202103/927750-20210312164541088-1112379002.png)
+ ![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/927750-20210312164541088-1112379002.png)
 
 上述映射的示意图如下：
 
- ![img](https://img2020.cnblogs.com/blog/927750/202103/927750-20210312164552388-995624370.png)
+ ![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/927750-20210312164552388-995624370.png)
 
 对于上述的映射公式，结合蒙日问题的定义公式，可以归纳如下：
 
-![img](https://img2020.cnblogs.com/blog/927750/202103/927750-20210312164603385-1199671036.png)
+![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/927750-20210312164603385-1199671036.png)
 
 上述公式的含义：通过这个映射$T(x_i)$的转移，使得转移到$b_j$的所有$a_i$的值的和刚好等于$b_j$（其中要求，所有$a_i$必须转走，而所有$b_j$必须收到预期的货物），即我需要多少就给运输转移多少，不能多也不能少。其中$c()$表示运输代价，$T(x_i)$表示映射的运输方案。
 
@@ -62,19 +62,19 @@ mathjax: true
 
 蒙日问题是最优运输的起初最重要的思想，然而其有一个很大的缺点: 从a的所有货物运输到b时，只能采用原始的货物大小进行运算，即不能对原始的货物进行拆开发送到不同目的地。而Kantorovich Relaxation则对蒙日问题进行了松弛处理，即原始的货物可以分开发送到不同目的地，也可以把蒙日问题理解为Kantorovich Relaxation的一个映射运输特例。具体区别可以参考下图[2]。
 
-![img](https://img2020.cnblogs.com/blog/927750/202103/927750-20210312164631292-910603132.png)
+![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/927750-20210312164631292-910603132.png)
 
 符合Kantorovich Relaxation的映射运输定义公式如下：
 
-![img](https://img2020.cnblogs.com/blog/927750/202103/927750-20210312164648582-1519254757.png)
+![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/927750-20210312164648582-1519254757.png)
 
 区别于蒙日问题要求映射运输的所有$a_i$一对一转走到$b_j$。Kantorovich Relaxation只要求，所有每个$a_i$中获取能够完全转走，可以是只转给一个$b_j$，也可以是多个$b_j$，但是要确保每个$b_j$只需要收取预期要求的货物即可。简单地描述：**行求和对应向量a**, **列向量求和对应向量 b**.具体的传输示例如下：
 
- ![img](https://img2020.cnblogs.com/blog/927750/202103/927750-20210312164703284-644792148.png)
+ ![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/927750-20210312164703284-644792148.png)
 
 最后，Kantorovich Relaxation的最优运输求解公式定义如下：
 
-![img](https://img2020.cnblogs.com/blog/927750/202103/927750-20210312164713992-32805890.png)
+![img](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/927750-20210312164713992-32805890.png)
 
 其中P表示符合所有行求和为向量a，所有列求和为向量b的一个映射。Pi,j表示从第i行映射到第j行的元素值，Ci,j表示完成Pi,j元素映射（或者说是运输）的运输代价。
 
@@ -121,7 +121,7 @@ $\sum_{i, j} \mathbf{P}_{i, j}=1$ 所以 $\log \left(\mathbf{P}_{i, j}\right)<0$
 
 ![image-20230104200125174](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/image-20230104200125174.png)
 
-![image-20230104200441847](C:\Users\HY\Desktop\组会2023_1_4\image-20230104200441847.png)
+![image-20230104200441847](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/image-20230104200441847.png)
 
 因为 $P=diag(u)Kdiag(v)$，而且根据之前的 “**行求和对应向量a**, **列向量求和对应向量 b**”的条件，
 
