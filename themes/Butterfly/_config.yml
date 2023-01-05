@@ -669,6 +669,7 @@ aside:
   card_announcement:
     enable: true
     content: <img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171728602.gif">
+    # content: <img src="https://ghchart.rshah.org/kakaluoto" alt="???'s Github chart" />
   card_recent_post:
     enable: true
     limit: 5 # if set 0 will show all
