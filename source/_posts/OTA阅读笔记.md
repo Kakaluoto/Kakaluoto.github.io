@@ -2,7 +2,7 @@
 title: 【标签分配】OTA阅读笔记
 date: 2023-2-15
 tags: [机器学习，目标检测]
-cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/5466.webp
+cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/timg2.webp
 mathjax: true
 ---
 # OTA阅读笔记
