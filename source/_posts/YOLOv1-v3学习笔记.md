@@ -136,7 +136,7 @@ YOLOv3在通过主干网络darknet53之后，通过两次上采样来获得三�
 ![](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171712971.png)
 ### 3.3 正负样本的选择
 
-有别于原文，https://github.com/ultralytics/yolov5版本的实现。
+有别于原文，https://github.com/ultralytics/yolov5 版本的实现。
 
 ![image-20221102190216052](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171712525.png)
 
