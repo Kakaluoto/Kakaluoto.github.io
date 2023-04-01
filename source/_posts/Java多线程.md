@@ -380,4 +380,315 @@ public class RunnableImpl implements Runnable {
     }
 }
 ```
+## 3. 线程状态
+
+当线程被创建并启动以后，它既不是一启动就进入了执行状态，也不是一直处于执行状态。在线程的生命周期中， 有几种状态呢？在API中` java.lang.Thread.State` 这个枚举中给出了六种线程状态： 这里先列出各个线程状态发生的条件，下面将会对每种状态进行详细解析:
+
+| 线程状态                | 导致状态发生的条件                                           |
+| ----------------------- | ------------------------------------------------------------ |
+| NEW(新建)               | 线程刚被创建，但是并未启动。还未调用start方法                |
+| Runnable(可运行)        | 线程可以在jvm中运行的状态，可能正在运行自己的代码，也可能没有，看OS和CPU |
+| Blocked(锁阻塞)         | 当一个线程试图获取一个对象锁，而该对象锁被其他线程持有，则该线程进入Blocked状态，当该线程持有锁时，将变成Runnable状态 |
+| Waiting(无限等待)       | 一个线程在等待另一个线程执行(唤醒)操作时，该线程进入waiting状态。进入这个状态后是不能自动唤醒的，必须等待另一个线程调用notify或者notifyAll方法才能够唤醒。 |
+| Timed Waiting(计时等待) | 同waiting状态，有几个方法有超时参数，调用他们将进入Timed Waiting状态。这一状态将一直保持到超时期满或者接收到唤醒通知。带有超时参数的常用方法有Thread.sleep、Obejct.wait。 |
+| Terminated(被终止)      | 因为run方法正常退出而死亡,或者因为没有捕获的异常终止了run方法而死亡。 |
+
+![](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%8A%B6%E6%80%81%E5%9B%BE.webp)
+
+### 3.1 Timed Waiting(计时等待状态)
+
+Timed Waiting在API中的描述为：一个正在限时等待另一个线程执行一个（唤醒）动作的线程处于这一状态。在我们写卖票的案例中，为了减少线程执行太快，现象不明显等问题，我们在run方法中添加了sleep语句，这样就 强制当前正在执行的线程休眠（暂停执行）以“减慢线程”。其实当我们调用了sleep方法之后，当前执行的线程就进入到“休眠状态”，其实就是所谓的Timed Waiting(计时等待)。
+
+<img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/%E8%AE%A1%E6%97%B6%E7%AD%89%E5%BE%85.webp"  />
+
+### 3.2 BLOCKED(锁阻塞)
+Blocked状态在API中的介绍为：一个正在阻塞等待一个监视器锁（锁对象）的线程处于这一状态。
+我们已经学完同步机制，那么这个状态是非常好理解的了。比如，线程A与线程B代码中使用同一锁，如果线程A获取到锁，线程A进入到Runnable状态，那么线程B就进入到Blocked锁阻塞状态。
+
+![](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/%E9%94%81%E9%98%BB%E5%A1%9E.webp)
+
+
+## 4. 等待与唤醒机制
+### 4.1 线程间通信
+
+![](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/%E7%BA%BF%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1.webp)
+
+**为什么要处理线程间通信:**
+
+多个线程并行执行时，在默认情况下CPU是随即切换线程的，当我们需要多个线程来共同完成一件任务，并且我们希望他们有规律的执行，那么多线程之间需要一些协调通信，以此来帮助我们达到多线程共同操作一份数据。
+
+**如何保证线程间通信有效利用资源：**
+
+多个线程在处理同一个资源，并且任务不同时，需要线程通信来帮助解决线程之间对同一个变量的使用或操作。 就是多个线程在操作同一份数据时， 避免对同一共享变量的争夺。也就是我们需要通过一定的手段使各个线程能有效的利用资源。而这种手段即—— **等待唤醒机制。**
+
+
+### 4.2  等待与唤醒机制
+
+![](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/01_%E7%AD%89%E5%BE%85%E4%B8%8E%E5%94%A4%E9%86%92%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90_1.webp)
+
+**什么是等待唤醒机制**
+
+这是多个线程间的一种**协作**机制。谈到线程我们经常想到的是线程间的**竞争（race）**，比如去争夺锁，但这并不是故事的全部，线程间也会有协作机制。就好比在公司里你和你的同事们，你们可能存在在晋升时的竞争，但更多时候你们更多是一起合作以完成某些任务。
+
+就是在一个线程进行了规定操作后，就进入等待状态（**wait()**）， 等待其他线程执行完他们的指定代码过后 再将其唤醒（**notify()**）;在有多个线程进行等待时， 如果需要，可以使用 notifyAll()来唤醒所有的等待线程。
+
+wait/notify 就是线程间的一种协作机制。
+
+**等待唤醒中的方法**
+
+等待唤醒机制就是用于解决线程间通信的问题的，使用到的3个方法的含义如下：
+
+1. wait：线程不再活动，不再参与调度，进入 wait set 中，因此不会浪费 CPU 资源，也不会去竞争锁了，这时的线程状态即是 WAITING。它还要等着别的线程执行一个**特别的动作**，也即是“**通知（notify）**”在这个对象上等待的线程从wait set 中释放出来，重新进入到调度队列（ready queue）中
+2. notify：则选取所通知对象的 wait set 中的一个线程释放；例如，餐馆有空位置后，等候就餐最久的顾客最先入座。
+3. notifyAll：则释放所通知对象的 wait set 上的全部线程。
+
+>注意：
+>
+>哪怕只通知了一个等待的线程，被通知线程也不能立即恢复执行，因为它当初中断的地方是在同步块内，而此刻它已经不持有锁，所以她需要再次尝试去获取锁（很可能面临其它线程的竞争），成功后才能在当初调用 wait 方法之后的地方恢复执行。
+>
+>总结如下：
+>
+>- 如果能获取锁，线程就从 WAITING 状态变成 RUNNABLE 状态；
+>- 否则，从 wait set 出来，又进入 entry set，线程就从 WAITING 状态又变成 BLOCKED 状态
+
+**调用wait和notify方法需要注意的细节**
+
+1. wait方法与notify方法必须要由同一个锁对象调用。因为：对应的锁对象可以通过notify唤醒使用同一个锁对象调用的wait方法后的线程。
+2. wait方法与notify方法是属于Object类的方法的。因为：锁对象可以是任意对象，而任意对象的所属类都是继承了Object类的。
+3. wait方法与notify方法必须要在同步代码块或者是同步函数中使用。因为：必须要通过锁对象调用这2个方法。
+
+### 4.3 生产者与消费者问题
+
+等待唤醒机制其实就是经典的生产者消费者问题。
+
+以生产包子消费包子为例来说明等待唤醒机制如何有效利用资源：
+
+![](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/01_%E7%AD%89%E5%BE%85%E4%B8%8E%E5%94%A4%E9%86%92%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90_2.webp)
+包子类
+
+```java
+public class BaoZi {
+    //皮
+    String skin;
+    //馅
+    String stuff;
+    //包子的状态:true 有 false无
+    boolean flag = false;
+}
+```
+包子铺类
+
+```java
+/*
+ * 注意: 包子铺线程和包子线程的关系---(互斥)
+ * 必须同时同步，保证两个线程只有一个在执行
+ * 锁对象必须保持唯一，可以使用包子对象作为锁对象
+ * 包子铺类和吃货类需要把包子对象作为参数传进来
+ * */
+public class BaoZiStore extends Thread {
+    private BaoZi bz;
+
+    public BaoZiStore(BaoZi bz) {
+        this.bz = bz;
+    }
+
+    @Override
+    public void run() {
+        //定义一个变量用来记录包子的种类
+        int cnt = 0;
+        while (true) {
+            synchronized (bz) {
+                //对包子的状态进行判断
+                if (bz.flag) {
+                    //包子铺调用wait方法进入等待状态
+                    try {
+                        bz.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                //被唤醒后执行
+                //交替生产两种包子
+                if (cnt % 2 == 0) {
+                    //生产薄皮三鲜馅包子
+                    bz.skin = "薄皮";
+                    bz.stuff = "三鲜";
+                } else {
+                    bz.skin = "冰皮";
+                    bz.stuff = "牛肉";
+                }
+                cnt++;
+                System.out.println("包子铺正在生产:" + bz.skin + bz.stuff);
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                //包子铺生产好了包子
+                //修改包子的状态为true
+                bz.flag = true;
+                //唤醒等待的吃货线程
+                bz.notify();
+                System.out.println("包子铺已经生产好了:" + bz.skin + bz.stuff + "吃货可以开始吃了");
+            }
+        }
+    }
+}
+```
+
+消费者类
+
+```java
+public class Consumer extends Thread {
+    private BaoZi bz;
+
+    public Consumer(BaoZi bz) {
+        this.bz = bz;
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            synchronized (bz) {
+                //对包子状态进行判断
+                if (!bz.flag) {
+                    //吃货调用wait方法进入等待状态
+                    try {
+                        bz.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                //被唤醒后执行的代码
+                System.out.println("吃货正在吃:" + bz.skin + bz.stuff);
+                bz.flag = false;
+                bz.notify();
+                System.out.println("吃货已经把:" + bz.skin + bz.stuff + "吃完了，包子铺开始生产包子了");
+                System.out.println("__________________________________________________");
+            }
+        }
+    }
+}
+```
+
+测试类
+
+```java
+public class test {
+    public static void main(String[] args) {
+        BaoZi bz = new BaoZi();
+        new BaoZiStore(bz).start();
+        new Consumer(bz).start();
+    }
+}
+```
+
+
+
+## 5. 线程池
+
+### 5.1 线程池概念
+
+**线程池：**其实就是一个容纳多个线程的容器，其中的线程可以反复使用，省去了频繁创建线程对象的操作，无需反复创建线程而消耗过多资源。
+
+![](https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/02_%E7%BA%BF%E7%A8%8B%E6%B1%A0.webp)
+
+合理利用线程池能够带来三个好处：
+
+1. 降低资源消耗。减少了创建和销毁线程的次数，每个工作线程都可以被重复利用，可执行多个任务。
+2. 提高响应速度。当任务到达时，任务可以不需要的等到线程创建就能立即执行。
+3. 提高线程的可管理性。可以根据系统的承受能力，调整线程池中工作线线程的数目，防止因为消耗过多的内存，而把服务器累趴下(每个线程需要大约1MB内存，线程开的越多，消耗的内存也就越大，最后死机)。
+
+### 5.2 线程池的使用
+
+Java里面线程池的顶级接口是`java.util.concurrent.Executor`，但是严格意义上讲`Executor`并不是一个线程池，而只是一个执行线程的工具。真正的线程池接口是`java.util.concurrent.ExecutorService`。
+
+要配置一个线程池是比较复杂的，尤其是对于线程池的原理不是很清楚的情况下，很有可能配置的线程池不是较优的，因此在`java.util.concurrent.Executors`线程工厂类里面提供了一些静态工厂，生成一些常用的线程池。官方建议使用Executors工程类来创建线程池对象。
+
+Executors类中有个创建线程池的方法如下：
+
+* `public static ExecutorService newFixedThreadPool(int nThreads)`：返回线程池对象。(创建的是有界线程池,也就是池中的线程个数可以指定最大数量)
+
+获取到了一个线程池ExecutorService 对象，那么怎么使用呢，在这里定义了一个使用线程池对象的方法如下：
+
+* `public Future<?> submit(Runnable task)`:获取线程池中的某一个线程对象，并执行
+
+  > Future接口：用来记录线程任务执行完毕后产生的结果。线程池创建与使用。
+
+```java
+/**
+ * 线程池jdk1.5之后提供
+ * java.util.concurrent.Executors:线程池的工厂类，用来生成线程池
+ * Executor类中的静态方法
+ *      static ExecutorService newFixedThreadPool(int nThreads)创建一个可重用固定线程数的线程池
+ * 参数:
+ *      int nThreads:创建线程池中的线程数量
+ * 返回值:
+ *      ExecutorService接口，返回的是ExecutorService接口的实现对象，我们可以使用ExecutorService接口接收(面向接口编程)
+ * java.util.concurrent.ExecutorService:线程池接口
+ *      用来从线程池中获取线程，调用start方法，执行线程任务
+ *          submit(Runnable task)提交一个Runnable任务用于执行
+ *      关闭/销毁线程池的方法
+ *          void shutdown()按顺序完成当前任务,不在接收新任务
+ * 线程池的使用步骤:
+ *     1.使用线程池的工厂类Executors里边提供的静态方法newFixedThreadPool生产一个指定线程数量的线程池
+ *     2.创建一个类，实现Runnable接口，重写run方法
+ *     3.调用ExecutorService中的方法submit,传递线程任务(实现类),开启线程，执行run方法
+ *     4.(可选)调用ExecutorService中的方法shutdown销毁线程池
+ */
+```
+
+使用线程池中线程对象的步骤：
+
+1. 创建线程池对象。
+2. 创建Runnable接口子类对象。(task)
+3. 提交Runnable接口子类对象。(take task)
+4. 关闭线程池(一般不做)。
+
+Runnable实现类代码：
+
+```java
+public class MyRunnable implements Runnable {
+    @Override
+    public void run() {
+        System.out.println("我要一个教练");
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("教练来了： " + Thread.currentThread().getName());
+        System.out.println("教我游泳,交完后，教练回到了游泳池");
+    }
+}
+```
+
+线程池测试类：
+
+```java
+public class ThreadPoolDemo {
+    public static void main(String[] args) {
+        // 创建线程池对象
+        ExecutorService service = Executors.newFixedThreadPool(2);//包含2个线程对象
+        // 创建Runnable实例对象
+        MyRunnable r = new MyRunnable();
+
+        //自己创建线程对象的方式
+        // Thread t = new Thread(r);
+        // t.start(); ---> 调用MyRunnable中的run()
+
+        // 从线程池中获取线程对象,然后调用MyRunnable中的run()
+        service.submit(r);
+        // 再获取个线程对象，调用MyRunnable中的run()
+        service.submit(r);
+        service.submit(r);
+        // 注意：submit方法调用结束后，程序并不终止，是因为线程池控制了线程的关闭。
+        // 将使用完的线程又归还到了线程池中
+        // 关闭线程池
+        //service.shutdown();
+    }
+}
+```
+
+
 
