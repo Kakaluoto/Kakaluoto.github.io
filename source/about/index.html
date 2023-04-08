@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Catch The Cat</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            background-color: #eeeeee;
+        }
+
+        #catch-the-cat {
+            width: 100%;
+            margin-top: 0px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body onload="moveCanvas()">
+
+    <script src="phaser.min.js"></script>
+    <script src="catch-the-cat.js"></script>
+
+    <div id="catch-the-cat"></div>
+    <!-- 1行对应43px -->
+    <script>
+        window.game = new CatchTheCatGame({
+            w: 12,
+            h: 12,
+            r: 20,
+            backgroundColor: 0xffffff,
+            parent: 'catch-the-cat',
+            statusBarAlign: 'center',
+            credit: 'for kakaluoto\'s blog'
+        });
+    </script>
+    <script>
+        function moveCanvas(){
+            document.getElementById('catch-the-cat').firstChild.style.margin = '64.5px';
+        }
+    </script>
+</body>
+</html>
