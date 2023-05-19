@@ -4,7 +4,6 @@ title: 【PID控制算法】 python模拟PID控制算法
 date: 2023-3-17
 tags: [算法,控制]
 cover: https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/2023_03_15_3.webp
-
 mathjax: true
 ---
 # PID控制Python模拟
