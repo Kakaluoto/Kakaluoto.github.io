@@ -1,0 +1,445 @@
+<!DOCTYPE html><html lang="zh-Hans" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>【机器学习】推荐系统 Factorization Machines 因子分解机 | Kakaluoto's Blog</title><meta name="keywords" content="机器学习,推荐系统"><meta name="author" content="kakaluoto"><meta name="copyright" content="kakaluoto"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前言因子分解机 (Factorization Machines) 是CTR预估的重要模型之一。要讲述因子分解机FM，就避不开逻辑回归LR（logistic Rgeression）和矩阵分解MF（Matrix Factorization）。 转自推荐系统玩家 之 因子分解机FM（Factorization Machines） - 知乎 (zhihu.com) 1.因子分解机的演变传统的推荐模型 上图">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【机器学习】推荐系统 Factorization Machines 因子分解机">
+<meta property="og:url" content="http://kakaluoto.xyz/2021/11/30/Factorization%20Machines/index.html">
+<meta property="og:site_name" content="Kakaluoto&#39;s Blog">
+<meta property="og:description" content="前言因子分解机 (Factorization Machines) 是CTR预估的重要模型之一。要讲述因子分解机FM，就避不开逻辑回归LR（logistic Rgeression）和矩阵分解MF（Matrix Factorization）。 转自推荐系统玩家 之 因子分解机FM（Factorization Machines） - 知乎 (zhihu.com) 1.因子分解机的演变传统的推荐模型 上图">
+<meta property="og:locale">
+<meta property="og:image" content="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212172015099.webp">
+<meta property="article:published_time" content="2021-11-29T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-12-07T10:10:40.942Z">
+<meta property="article:author" content="kakaluoto">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="推荐系统">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212172015099.webp"><link rel="shortcut icon" href="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171725027.png"><link rel="canonical" href="http://kakaluoto.xyz/2021/11/30/Factorization%20Machines/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"We didn't find any results for the search: ${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":false,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '【机器学习】推荐系统 Factorization Machines 因子分解机',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-12-07 18:10:40'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    document.addEventListener('pjax:complete', detectApple)})(window)</script><link rel="stylesheet" href="/css/mouse.css"><link rel="stylesheet" href="/css/footer.css"><link rel="stylesheet" href="/css/szgotop.css" /><script src="/js/jquery.min.js"></script><div id="aplayer"></div><script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js" async></script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.css" /><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171726052.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">32</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">34</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212172015099.webp')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Kakaluoto's Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">【机器学习】推荐系统 Factorization Machines 因子分解机</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-11-29T16:00:00.000Z" title="Created 2021-11-30 00:00:00">2021-11-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-12-07T10:10:40.942Z" title="Updated 2024-12-07 18:10:40">2024-12-07</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="【机器学习】推荐系统 Factorization Machines 因子分解机"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a><strong>前言</strong></h2><p>因子分解机 (Factorization Machines) 是CTR预估的重要模型之一。要讲述因子分解机FM，就避不开<strong>逻辑回归LR</strong>（logistic Rgeression）和<strong>矩阵分解MF</strong>（Matrix Factorization）。</p>
+<p>转自<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/153500425">推荐系统玩家 之 因子分解机FM（Factorization Machines） - 知乎 (zhihu.com)</a></p>
+<h2 id="1-因子分解机的演变"><a href="#1-因子分解机的演变" class="headerlink" title="1.因子分解机的演变"></a>1.因子分解机的演变</h2><p>传统的推荐模型<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171702148.jpeg" alt="img"></p>
+<p>上图是传统的推荐系统模型的分类，逻辑回归LR模型在传统的推荐模型中占据着非常重要的位置。而因子分解机的出现，也来源于<strong>逻辑回归和矩阵分解</strong>的演化。</p>
+<p>首先我们知道，<strong>逻辑回归</strong>的是对所有特征的一个线性加权组合, 然后再加入Sigmoid逻辑函数：</p>
+<script type="math/tex; mode=display">
+\large \hat{y}(x)=w_{0}+w_{1} x_{1}+\ldots+w_{n} x_{n}=w_{0}+\sum_{i=1}^{n} w_{i} x_{i} \tag{1}</script><p>对比与矩阵分解，虽然逻辑回归模型已经<strong>不单单</strong>考虑了用户的行为特征，也可以加入年龄，性别，物品的属性，时间，地点等等特征。但是逻辑回归表达能力仍然差的原因是仅仅用了每个单一的特征，而没有考虑到<strong>特征之间的关系</strong>。</p>
+<p>那有没有模型可以加入特征之间的联系呢？</p>
+<p><strong>POLY2模型（Degree-2 Polynomial Margin）</strong>则在LR的基础上采用了一种<strong>暴力的特征组合模式</strong>，即将所有特征两两相交，因此原来的LR模型就变成了：</p>
+<script type="math/tex; mode=display">
+\large \hat{y}(x)=w_{0}+\sum_{i=1}^{n} w_{i} x_{i}+\sum_{i=1}^{n-1} \sum_{j=i\llcorner 1}^{n} w_{i j} x_{i} x_{j} \tag{2}</script><p>其中$\Large w_{i j}$​​是特征组合的$ (i, j)$​​权重。</p>
+<p>也就是说，<strong>POLY2模型</strong>将所有的特征两两相交，暴力的组合了特征。这样以来，就增加了特征的维度，考虑到了特征之间的关系。但是同时，暴力的组合带来的是维度的增加。在机器学习中，我们普遍使用<strong>One-hot</strong>编码，这样的暴力组合，就使得复杂度从$\large n$​​​​上升到了 ,$\large n^2$​​​​ 特征维度也上升，同时数据极度稀疏，在训练过程中很难收敛。</p>
+<p>那么有没有方法可以处理稀疏数据，同时保持特征之间的联系呢？</p>
+<h2 id="2-因子分解机"><a href="#2-因子分解机" class="headerlink" title="2.因子分解机"></a>2.因子分解机</h2><p>用户对电影打分的onehot编码</p>
+<p><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171702828.jpeg" alt="img"></p>
+<p>上图是电影背景下，用户对电影打分的onehot编码形式。每行代表一个样本，每列都代表一个特征。同时特征可以分为五个部分：用户ID，电影ID，用户对其他电影的打分（归一化），时间信息，以及对上一次电影的打分。</p>
+<p>首先我们直观的看下，为什么<strong>POLY2模型</strong>在很多情况下是不适用的。</p>
+<script type="math/tex; mode=display">
+\large \hat{y}(x)=w_{0}+\sum_{i=1}^{n} w_{i} x_{i}+\sum_{i=1}^{n-1} \sum_{j=i+1}^{n} w_{i j} x_{i} x_{j} \tag{3}</script><p><strong>POLY2模型</strong>的表达式如上， $\Large w<em>{0}$是常数项， $\Large w</em>{i}$是一阶特征的系数， $\Large w<em>{i}w</em>{j}$是二阶特征的系数，也就是交叉特征的系数。而由于在数据中，不是每个特征组合都有相互作用，因此， $\Large x<em>{i}\cdot x</em>{j}$为0。</p>
+<p>举个例子来说，如上图中，我们要估计用户A对电影ST星际迷航（Star Trek）的相互作用，来预测A都ST的打分。显然，上图中A列乘以ST列是等于0的。也就是说，交叉项  $\Large x<em>{i}\cdot x</em>{j}$ 为0了，那么对应的  $\Large w<em>{i}w</em>{j}$ 在梯度更新时，$\Large\frac{\partial \hat{y}(x)}{\partial w<em>{i, j}}=x</em>{i} x<em>{j}=0$，因此也就会导致  $\Large w</em>{i}w_{j}$ 的训练不充分且不准确，进而影响模型的效果。</p>
+<p>因此，<strong>因子分解机</strong>的应运而生。</p>
+<p>因子分解机的<strong>优势</strong>是为每个特征学习了一个<strong>隐权重向量（latent vector），</strong>在特征交叉的时候，用这两个特征隐向量内积作为交叉特征的权重。如何理解这个含义呢？</p>
+<p>在这里我们就要提一嘴矩阵分解。矩阵分解其实是将一个稀疏矩阵R分解为两个矩阵内积的形式，通过内积回乘，就能够得到一个满秩的矩阵。如果是电影的评分矩阵，也就是可以对未知的电影评分进行预测。具体可以看这篇文章：</p>
+<p>而因子分解机FM就是在POLY2模型的基础上，融合了矩阵分解的思想。即，对二阶交叉特征的系数以矩阵分解的方式调整，让系数不再是独立无关的，同时解决数据稀疏导致的无法训练参数的问题：</p>
+<script type="math/tex; mode=display">
+\large\hat{y}(\mathbf{x}):=w_{0}+\sum_{i=1}^{n} w_{i} x_{i}+\sum_{i=1}^{n} \sum_{j=i+1}^{n}\left\langle\mathbf{v}_{i}, \mathbf{v}_{j}\right\rangle x_{i} x_{j} \tag{4}</script><p>其中，$\large w_{0} \in \mathbb{R}, \quad \mathbf{w} \in \mathbb{R}^{n}, \quad \mathbf{V} \in \mathbb{R}^{n \times k}, V$是一个$\large n * k$的向量矩阵，$\large n$是特征$\large x$的个数，$\large k$是个待确定的参数。</p>
+<p>$\large \left\langle\mathbf{v}<em>{i}, \mathbf{v}</em>{j}\right\rangle$ 表示点乘,即向量对应位置乘积的和</p>
+<script type="math/tex; mode=display">
+\large \left\langle\mathbf{v}_{i}, \mathbf{v}_{j}\right\rangle:=\sum_{f=1}^{k} v_{i, f} \cdot v_{j, f} \tag{5}</script><p>由矩阵分解可知，对任意一个正定矩阵$\large \mathbf{W}$，都可以找到一个矩阵$\large \mathbf{V}$，$\large \mathbf{}$且在矩阵$\large \mathbf{V}$维度$\large k$足够大的情况下使得$\large \mathbf{W}=\mathbf{V} \cdot \mathbf{V}^{t}$成立。因此，通过矩阵分解用两个向量 $\Large v<em>{i}$ 和 $\Large v</em>{j}$ 的内积近似原先矩阵$\large \mathbf{W}$。</p>
+<p>其次，在拆解为 $\large\mathbf{v}<em>{i}$ 和之 $\large\mathbf{v}</em>{j}$ 后，参数更新时是对这两个向量分别更新的，那么在更新时，对于向量，我$\large\mathbf{v}<em>{i}$们不需要寻找到一组 $\Large x</em>{i}$和 $\Large x<em>{j}$同时不为0，我们只需要在$\large x</em>{i} \neq 0$的情况下，找到任意一个样本$\large x<em>{k} \neq 0$即可通过 $\Large x</em>{i}x<em>{k}$ 来更新 $\Large v</em>{i}$ 。</p>
+<p>我们举个例子来理解下上面的定义：</p>
+<p>在商品推荐的场景下，样本有两个特征，分别是类品和品牌。某个训练样本的特征组合是（足球，阿迪达斯）。在POLY2模型中，只有当“足球”和“阿迪达斯”同时出现在一个训练样本中时，模型才能够学到这个组合特征对应的权重。而在因子分解机FM中，“足球”的的隐向量也可以根据（足球，耐克）进行更新。“阿迪达斯”的隐向量也可以根据（篮球，阿迪达斯）更新，由此一来，就大幅度的降低了模型对稀疏性的要求。</p>
+<p>更极端的情况，对于一个从未出现的组合（篮球，耐克），因为模型已经学习了“篮球”和“耐克”的隐向量，因此就具备了更新权重  $\Large w$​ 的能力，使其泛化能力大大提高。</p>
+<h2 id="3-降低时间复杂度"><a href="#3-降低时间复杂度" class="headerlink" title="3.降低时间复杂度"></a>3.降低时间复杂度</h2><p>公式（3）的时间复杂度为 $O\left(k n^{2}\right)$ , 我们可以对二阶交叉特征进行化简，使时间复杂度降低到 $O\left(k n\right)$ 。</p>
+<script type="math/tex; mode=display">
+\large \sum_{i=1}^{n} \sum_{j=i+1}^{n}\left\langle\mathbf{v}_{i}, \mathbf{v}_{j}\right\rangle x_{i} x_{j} \tag{6}</script><p><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171702081.jpeg" alt="img"></p>
+<p>首先矩阵A中的上三角，红色方框部分代表公式（6），也就是因子分解机中二阶交叉项部分。由图可以看出，他是矩阵的全部元素减去对角线元素之和得到的, 即：</p>
+<p><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171702370.png" alt="img"></p>
+<script type="math/tex; mode=display">
+\large \sum_{i=1}^{n} \sum_{j=i+1}^{n}\left\langle\mathbf{v}_{i}, \mathbf{v}_{j}\right\rangle x_{i} x_{j}=\frac{1}{2}\left(\sum_{i=1}^{n} \sum_{j=1}^{n}\left\langle\mathbf{v}_{i}, \mathbf{v}_{j}\right\rangle x_{i} x_{j}-\sum_{i=1}^{n}\left\langle\mathbf{v}_{i}, \mathbf{v}_{i}\right\rangle x_{i} x_{i}\right)</script><p>其中， $\large \sum<em>{i=1}^{n} \sum</em>{j=1}^{n}\left\langle\mathbf{v}<em>{i}, \mathbf{v}</em>{j}\right\rangle x<em>{i} x</em>{j}$​ 是矩阵全部元素之和。  $\large \sum<em>{i=1}^{n}\left\langle\mathbf{v}</em>{i}, \mathbf{v}<em>{i}\right\rangle x</em>{i} x_{i}$​代表对角线元素之和。</p>
+<p>因为 ：</p>
+<script type="math/tex; mode=display">
+\large \left\langle\mathbf{v}_{i}, \mathbf{v}_{i}\right\rangle=\sum_{f=1}^{k} v_{i, f}, v_{j, f}</script><p>因此继续化简：</p>
+<script type="math/tex; mode=display">
+\large =\frac{1}{2}\left(\sum_{i=1}^{n} \sum_{j=1}^{n} \sum_{f=1}^{k} v_{i, f} v_{j, f} x_{i} x_{j}-\sum_{i=1}^{n} \sum_{f=1}^{k} v_{i, f} v_{i, f} x_{i} x_{i}\right)</script><script type="math/tex; mode=display">
+\large =\frac{1}{2} \sum_{f=1}^{k}\left(\left(\sum_{i=1}^{n} v_{i, f} x_{i}\right)\left(\sum_{j=1}^{n} v_{j, f} x_{j}\right)-\sum_{i=1}^{n} v_{i, f}^{2} x_{i}^{2}\right)</script><script type="math/tex; mode=display">
+\large =\frac{1}{2} \sum_{f=1}^{k}\left(\left(\sum_{i=1}^{n} v_{i, f} x_{i}\right)^{2}-\sum_{i=1}^{n} v_{i, f}^{2} x_{i}^{2}\right) \tag{7}</script><p>那么，<strong>因子分解机的二阶表达式</strong>就为：</p>
+<script type="math/tex; mode=display">
+\large \hat{y}(x):=w_{0}+\sum_{i=1}^{n} w_{i} x_{i}+\frac{1}{2} \sum_{f=1}^{k}\left(\left(\sum_{i=1}^{n} v_{i, f} x_{i}\right)^{2}-\sum_{i=1}^{n} v_{i, f}^{2} x_{i}^{2}\right) \tag{8}</script><p>其复杂度为  $O\left(k n\right)$​​  。考虑到特征的稀疏性，尽管  $\large n$​​可能很大，但很多  $\Large x_{i}$​​ 都是零。因此其实际复杂度应该是 $O(k \bar{n})$​​ ,其中  $\large \bar{n}$​​表示样本不为零的特征维度数量的平均值。</p>
+<h2 id="4-因子分解机FM求解"><a href="#4-因子分解机FM求解" class="headerlink" title="4.因子分解机FM求解"></a>4.因子分解机FM求解</h2><p>我们对公式（8）求偏导，可以计算因子分解模型对参数的梯度：</p>
+<ul>
+<li>当参数为  $\large w_{i}$​​ 时：</li>
+</ul>
+<script type="math/tex; mode=display">
+\large \frac{\partial \hat{y}(x)}{\partial w_{0}}=1 \tag{9}</script><ul>
+<li>当参数为  $\large w<em>{i}$ 时，只跟它相关的  $\large x</em>{i}$ 有关:</li>
+</ul>
+<script type="math/tex; mode=display">
+\large \frac{\partial \hat{y}(x)}{\partial w_{i}}=x_i \tag{10}</script><p>当参数为   $\large v_{i,f}$​ 时:</p>
+<script type="math/tex; mode=display">
+\large \begin{aligned} \frac{\partial \hat{y}(x)}{\partial v_{i, f}} &=\frac{\partial \frac{1}{2}\left(\left(\sum_{i=1}^{n} v_{i, f} x_{i}\right)^{2}-v_{i, f}^{2} x_{i}^{2}\right)}{\partial v_{i, f}} \\ &=\frac{1}{2}\left(2 x_{i} \sum_{i=1}^{n} v_{i, f} x_{i}-2 v_{i, f} x_{i}^{2}\right) \\ &=x_{i} \sum_{j=1}^{n} v_{j, f} x_{j}-v_{i, f} x_{i}^{2} \end{aligned} \tag{11}</script><p>因此，<strong>因子分解机FM模型对参数的梯度为</strong>：</p>
+<script type="math/tex; mode=display">
+\large \frac{\partial \hat{y}(x)}{\partial \theta}= \begin{cases}1, & \text { if } \theta \text { is } w_{0} \\ x_{i}, & \text { if } \theta \text { is } w_{i} \\ x_{i} \sum_{j=1}^{n} v_{j, f} x_{j}-v_{i, f} x_{i}^{2} & \text { if } \theta \text { is } v_{i, f}\end{cases} \tag{12}</script><h2 id="5-损失函数选取及算法流程"><a href="#5-损失函数选取及算法流程" class="headerlink" title="5.损失函数选取及算法流程"></a>5.损失函数选取及算法流程</h2><p>至此，我们就推导出了因子分解机的表达式以及参数的梯度。那么，损失函数在这里我们以以下两个为例, 并用梯度下降法求解：</p>
+<h3 id="回归问题：平方差损失函数"><a href="#回归问题：平方差损失函数" class="headerlink" title="回归问题：平方差损失函数"></a>回归问题：平方差损失函数</h3><script type="math/tex; mode=display">
+\large Loss =\frac{1}{2} \sum_{i=1}^{n}\left(\hat{y}_{i}-y_{i}\right)^{2}</script><p>求偏导得：</p>
+<script type="math/tex; mode=display">
+\large \frac{\partial L}{\partial \hat{y}(x)}=(\hat{y}(x)-y)</script><p>平方损失函数的梯度为：</p>
+<script type="math/tex; mode=display">
+\large \frac{\partial L}{\partial \theta}=(\hat{y}(x)-y) * \frac{\partial \hat{y}(x)}{\partial \theta}</script><h3 id="分类问题：对数损失函数"><a href="#分类问题：对数损失函数" class="headerlink" title="分类问题：对数损失函数"></a>分类问题：对数损失函数</h3><script type="math/tex; mode=display">
+\large L o s s=\frac{1}{2} \sum_{i=1}^{n}-\ln \left(\sigma\left(\hat{y}_{i} y_{i}\right)\right)^{2}</script><p>其中：</p>
+<script type="math/tex; mode=display">
+\large \sigma(\hat{y} y)=\frac{1}{1+e^{-\hat{y} y}}</script><script type="math/tex; mode=display">
+\large \frac{\partial(\sigma(\hat{y} y))}{\partial \hat{y}}=\sigma(\hat{y} y) *[1-\sigma(\hat{y} y)] * y</script><p>对数函数下的梯度为：</p>
+<script type="math/tex; mode=display">
+\large \frac{\partial L}{\partial \theta}=\frac{1}{\sigma(\hat{y} y)} * \sigma(\hat{y} y) *\left[1-\sigma(\hat{y} y] * y * \frac{\partial \hat{y}(x)}{\partial \theta}\right.</script><script type="math/tex; mode=display">
+\large =[1-\sigma(\hat{y} y)] * y * \frac{\partial \hat{y}(x)}{\partial \theta}</script><h3 id="算法流程-以对数损失函数为例）"><a href="#算法流程-以对数损失函数为例）" class="headerlink" title="算法流程(以对数损失函数为例）"></a>算法流程(以对数损失函数为例）</h3><ol>
+<li>初始化权重 $\large w<em>{0}, w</em>{1}, \ldots, w_{n}$​​ 和矩阵  $\mathbf{V}$​​</li>
+<li>对每一个样本：</li>
+</ol>
+<script type="math/tex; mode=display">
+\large w_{0}=w_{0}-\alpha[1-\sigma(\hat{y} y)] * y</script><p>对特征 $i \in(1, \ldots, n)$​ :</p>
+<script type="math/tex; mode=display">
+\large w_{i}=w_{i}-\alpha[1-\sigma(\hat{y} y)] * y * x_{i}</script><p>对  $f \in(1, \ldots, k)$​ :</p>
+<script type="math/tex; mode=display">
+\large v_{i, f}=v_{i, f}-\alpha[1-\sigma(\hat{y} y)] * y *\left[x_{i} \sum_{j=1}^{n} v_{j, f} x_{j}-v_{i, f} x_{i}^{2}\right]</script><ol>
+<li>重复步骤2，直到满足终止条件。</li>
+</ol>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u014595019/article/details/80586438">Matrix Factorization 学习记录（一）：基本原理及实现_Multiangle’s Notepad-CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.d2l.ai/chapter_recommender-systems/fm.html">16.9. Factorization Machines — Dive into Deep Learning 0.17.0 documentation (d2l.ai)</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_19446965/article/details/82079367?tdsourcetag=s_pctim_aiomsg">推荐系统中的矩阵分解总结<em>Rnan_prince的博客-CSDN博客</em>推荐系统矩阵分解</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/35262187">推荐系统之矩阵分解家族 - 知乎 (zhihu.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/153500425">推荐系统玩家 之 因子分解机FM（Factorization Machines） - 知乎 (zhihu.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/145120275">推荐系统玩家 之 矩阵分解(Matrix Factorization)的基本方法 及其 优缺点 - 知乎 (zhihu.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/pinard/p/6370127.html">分解机(Factorization Machines)推荐算法原理 - 刘建平Pinard - 博客园 (cnblogs.com)</a></p>
+<p><a target="_blank" rel="noopener" href="http://xiang578.com/post/fm.html">(FM) Factorization Machines | 算法花园 (xiang578.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/24798389">浅谈张量分解（一）：如何简单地进行张量分解？ - 知乎 (zhihu.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/24824550">浅谈张量分解（二）：张量分解的数学基础 - 知乎 (zhihu.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/25512080">浅谈张量分解（三）：如何对稀疏矩阵进行奇异值分解？ - 知乎 (zhihu.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/wy-ei/p/11534427.html">论文阅读 - Factorization Machines - wy-ei - 博客园 (cnblogs.com)</a></p>
+<p>《深度学习推荐系统》王喆</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">kakaluoto</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://kakaluoto.xyz/2021/11/30/Factorization%20Machines/">http://kakaluoto.xyz/2021/11/30/Factorization%20Machines/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><a class="post-meta__tags" href="/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">推荐系统</a></div><div class="post_share"><div class="social-share" data-image="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212172015099.webp" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/12/10/ELF%E6%96%87%E4%BB%B6%E8%A7%A3%E6%9E%90/"><img class="prev-cover" src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212172013142.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">【Linux】ELF文件解析</div></div></a></div><div class="next-post pull-right"><a href="/2021/11/27/01_C++%E5%BC%95%E7%94%A8/"><img class="next-cover" src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171659934.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">【01】【C++】C++引用</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2022/12/17/FCOS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="【目标检测】FCOS学习笔记"><img class="cover" src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171649832.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-17</div><div class="title">【目标检测】FCOS学习笔记</div></div></a></div><div><a href="/2023/01/05/Optimal%20Transport%E6%9C%80%E4%BC%98%E4%BC%A0%E8%BE%93/" title="【最优传输】Optimal Transport最优传输笔记"><img class="cover" src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/5466.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-05</div><div class="title">【最优传输】Optimal Transport最优传输笔记</div></div></a></div><div><a href="/2022/12/16/Retinanet%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="【目标检测】Retinanet学习笔记"><img class="cover" src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171832604.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-16</div><div class="title">【目标检测】Retinanet学习笔记</div></div></a></div><div><a href="/2022/11/18/YOLOv1-v3%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="【目标检测】YOLOv1-v3学习笔记"><img class="cover" src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212172022770.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-18</div><div class="title">【目标检测】YOLOv1-v3学习笔记</div></div></a></div><div><a href="/2021/11/20/bert_finetune/" title="【机器学习】Bert微调"><img class="cover" src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212172011962.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-11-20</div><div class="title">【机器学习】Bert微调</div></div></a></div><div><a href="/2021/10/14/self_attention/" title="【机器学习】自注意力"><img class="cover" src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212172021723.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-14</div><div class="title">【机器学习】自注意力</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171726052.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">kakaluoto</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">32</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">34</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Kakaluoto"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%9B%A0%E5%AD%90%E5%88%86%E8%A7%A3%E6%9C%BA%E7%9A%84%E6%BC%94%E5%8F%98"><span class="toc-number">2.</span> <span class="toc-text">1.因子分解机的演变</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%9B%A0%E5%AD%90%E5%88%86%E8%A7%A3%E6%9C%BA"><span class="toc-number">3.</span> <span class="toc-text">2.因子分解机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E9%99%8D%E4%BD%8E%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="toc-number">4.</span> <span class="toc-text">3.降低时间复杂度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%9B%A0%E5%AD%90%E5%88%86%E8%A7%A3%E6%9C%BAFM%E6%B1%82%E8%A7%A3"><span class="toc-number">5.</span> <span class="toc-text">4.因子分解机FM求解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%E9%80%89%E5%8F%96%E5%8F%8A%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B"><span class="toc-number">6.</span> <span class="toc-text">5.损失函数选取及算法流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9E%E5%BD%92%E9%97%AE%E9%A2%98%EF%BC%9A%E5%B9%B3%E6%96%B9%E5%B7%AE%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="toc-number">6.1.</span> <span class="toc-text">回归问题：平方差损失函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98%EF%BC%9A%E5%AF%B9%E6%95%B0%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="toc-number">6.2.</span> <span class="toc-text">分类问题：对数损失函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B-%E4%BB%A5%E5%AF%B9%E6%95%B0%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%E4%B8%BA%E4%BE%8B%EF%BC%89"><span class="toc-number">6.3.</span> <span class="toc-text">算法流程(以对数损失函数为例）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="toc-number">7.</span> <span class="toc-text">参考文章</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/12/06/03_C++%E4%B8%AD%E7%9A%84%E9%9D%99%E6%80%81/" title="【03】【C++】C++中的静态"><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/2023_12_05_1.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【03】【C++】C++中的静态"/></a><div class="content"><a class="title" href="/2024/12/06/03_C++%E4%B8%AD%E7%9A%84%E9%9D%99%E6%80%81/" title="【03】【C++】C++中的静态">【03】【C++】C++中的静态</a><time datetime="2024-12-05T16:00:00.000Z" title="Created 2024-12-06 00:00:00">2024-12-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/11/14/02_C++%E7%B1%BB/" title="【02】【C++】C++类"><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/2021_10_19_6.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【02】【C++】C++类"/></a><div class="content"><a class="title" href="/2024/11/14/02_C++%E7%B1%BB/" title="【02】【C++】C++类">【02】【C++】C++类</a><time datetime="2024-11-13T16:00:00.000Z" title="Created 2024-11-14 00:00:00">2024-11-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/07/11/Redis/" title="【Redis】Redis 极简入门课件"><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/2021_03_13_2.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【Redis】Redis 极简入门课件"/></a><div class="content"><a class="title" href="/2023/07/11/Redis/" title="【Redis】Redis 极简入门课件">【Redis】Redis 极简入门课件</a><time datetime="2023-07-10T16:00:00.000Z" title="Created 2023-07-11 00:00:00">2023-07-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/06/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9D%82%E8%AE%B0(%E4%B8%80)%E4%B9%8BJDBC/" title="【数据库】数据库杂记(一)之JDBC"><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/2022_06_01_10.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【数据库】数据库杂记(一)之JDBC"/></a><div class="content"><a class="title" href="/2023/06/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9D%82%E8%AE%B0(%E4%B8%80)%E4%B9%8BJDBC/" title="【数据库】数据库杂记(一)之JDBC">【数据库】数据库杂记(一)之JDBC</a><time datetime="2023-06-06T16:00:00.000Z" title="Created 2023-06-07 00:00:00">2023-06-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/05/19/%E5%A6%82%E4%BD%95%E7%A7%91%E5%AD%A6%E5%9C%B0%E5%88%A9%E7%94%A8%E9%AB%98%E5%85%89%E8%B0%B1%E5%9B%BE%E5%83%8F%E5%90%88%E6%88%90%E5%AF%B9%E5%BA%94%E7%9A%84RGB%E5%9B%BE%E5%83%8F/" title="【高光谱】如何科学地利用高光谱图像合成对应的RGB图像?"><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/8076.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【高光谱】如何科学地利用高光谱图像合成对应的RGB图像?"/></a><div class="content"><a class="title" href="/2023/05/19/%E5%A6%82%E4%BD%95%E7%A7%91%E5%AD%A6%E5%9C%B0%E5%88%A9%E7%94%A8%E9%AB%98%E5%85%89%E8%B0%B1%E5%9B%BE%E5%83%8F%E5%90%88%E6%88%90%E5%AF%B9%E5%BA%94%E7%9A%84RGB%E5%9B%BE%E5%83%8F/" title="【高光谱】如何科学地利用高光谱图像合成对应的RGB图像?">【高光谱】如何科学地利用高光谱图像合成对应的RGB图像?</a><time datetime="2023-05-18T16:00:00.000Z" title="Created 2023-05-19 00:00:00">2023-05-19</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><img src="https://count.getloli.com/get/@:kakaluoto?theme=rule34" alt=":rule34" /><div class="copyright">&copy;2020 - 2024 By kakaluoto</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a><img src="https://s1.ax1x.com/2023/01/05/pSkLKAJ.png" style="width:18px;height:18px;margin-bottom:-3px" alt="MOE ICP">
+<a href="https://icp.gov.moe/?keyword=20220014" target="_blank">萌ICP备20220014号</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">Local search</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'VV8NE4j4SUD2gK92gRMlO6VD-gzGzoHsz',
+      appKey: 'vxvwE6rJ0XETwlNkTzBoOkSU',
+      placeholder: 'Please leave your footprints',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'en',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+      requiredFields: ["nick,mail"],
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="/js/jquery.min.js"></script><script src="/js/szgotop.js"></script><div class="back-to-top cd-top faa-float animated cd-is-visible" style="top:-900px;"></div><div class="aplayer no-destroy" data-id="498105854" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="false" data-lrcType="0"> </div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.removeEventListener('scroll', window.tocScrollFn)
+  window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_clock_anzhiyu_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock_anzhiyu')
+    if(parent_div_git) {
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var qweather_key = 'b16a1fa0e63c46a4b8f28abfb06ae3fe';
+  var gaud_map_key = 'e2b04289e870b005374ee030148d64fd&s=rsv3';
+  var baidu_ak_key = 'undefined';
+  var flag = 0;
+  var clock_rectangle = '112.982279,28.19409';
+  var clock_default_rectangle_enable = 'false';
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  </script><script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script><script data-pjax src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>

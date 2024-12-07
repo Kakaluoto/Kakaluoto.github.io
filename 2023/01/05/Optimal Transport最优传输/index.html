@@ -1,0 +1,414 @@
+<!DOCTYPE html><html lang="zh-Hans" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>【最优传输】Optimal Transport最优传输笔记 | Kakaluoto's Blog</title><meta name="keywords" content="机器学习"><meta name="author" content="kakaluoto"><meta name="copyright" content="kakaluoto"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="1. 什么是最优传输  2. 基本概念3.1 离散测度 (Discrete measures)首先，说一下概率向量（或者称为直方图，英文：Histograms， probability vector）的定义：   上述公式的含义：一个长度为n的数组，每个元素的值在[0, 1]之间，并且该数组的和为1，即表示的是一个概率分布向量。 比如[0.1，0.2，0.3，0.4]就是一个概率向量。 离散测度：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【最优传输】Optimal Transport最优传输笔记">
+<meta property="og:url" content="http://kakaluoto.xyz/2023/01/05/Optimal%20Transport%E6%9C%80%E4%BC%98%E4%BC%A0%E8%BE%93/index.html">
+<meta property="og:site_name" content="Kakaluoto&#39;s Blog">
+<meta property="og:description" content="1. 什么是最优传输  2. 基本概念3.1 离散测度 (Discrete measures)首先，说一下概率向量（或者称为直方图，英文：Histograms， probability vector）的定义：   上述公式的含义：一个长度为n的数组，每个元素的值在[0, 1]之间，并且该数组的和为1，即表示的是一个概率分布向量。 比如[0.1，0.2，0.3，0.4]就是一个概率向量。 离散测度：">
+<meta property="og:locale">
+<meta property="og:image" content="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/5466.webp">
+<meta property="article:published_time" content="2023-01-04T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-12-07T10:10:40.945Z">
+<meta property="article:author" content="kakaluoto">
+<meta property="article:tag" content="机器学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/5466.webp"><link rel="shortcut icon" href="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171725027.png"><link rel="canonical" href="http://kakaluoto.xyz/2023/01/05/Optimal%20Transport%E6%9C%80%E4%BC%98%E4%BC%A0%E8%BE%93/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"We didn't find any results for the search: ${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":false,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '【最优传输】Optimal Transport最优传输笔记',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-12-07 18:10:40'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    document.addEventListener('pjax:complete', detectApple)})(window)</script><link rel="stylesheet" href="/css/mouse.css"><link rel="stylesheet" href="/css/footer.css"><link rel="stylesheet" href="/css/szgotop.css" /><script src="/js/jquery.min.js"></script><div id="aplayer"></div><script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js" async></script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.css" /><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171726052.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">32</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">34</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/5466.webp')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Kakaluoto's Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">【最优传输】Optimal Transport最优传输笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2023-01-04T16:00:00.000Z" title="Created 2023-01-05 00:00:00">2023-01-05</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-12-07T10:10:40.945Z" title="Updated 2024-12-07 18:10:40">2024-12-07</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="【最优传输】Optimal Transport最优传输笔记"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="1-什么是最优传输"><a href="#1-什么是最优传输" class="headerlink" title="1. 什么是最优传输"></a>1. 什么是最优传输</h2><p><img src="https://pic3.zhimg.com/80/v2-ce431cdd64777caf348b23bf9342d70a_720w.webp" alt="img" style="zoom:150%;" /></p>
+<p><img src="https://pic3.zhimg.com/80/v2-ec5c9d7a79e102ba85073d2c49b7cbda_720w.webp" alt="img" style="zoom:150%;" /></p>
+<h2 id="2-基本概念"><a href="#2-基本概念" class="headerlink" title="2. 基本概念"></a>2. 基本概念</h2><h3 id="3-1-离散测度-Discrete-measures"><a href="#3-1-离散测度-Discrete-measures" class="headerlink" title="3.1 离散测度 (Discrete measures)"></a>3.1 离散测度 (Discrete measures)</h3><p>首先，说一下概率向量（或者称为直方图，英文：Histograms， probability vector）的定义：</p>
+<p> <img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/927750-20210312164410898-507060181.png" alt="img"></p>
+<p>上述公式的含义：一个长度为n的数组，每个元素的值在[0, 1]之间，并且该数组的和为1，即表示的是一个概率分布向量。</p>
+<p>比如[0.1，0.2，0.3，0.4]就是一个概率向量。</p>
+<p>离散测度：所谓测度就是一个函数，把一个集合中的一些子集（符合上述概率分布向量）对应给一个数[4]。具体公式定义如下：</p>
+<p><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/927750-20210312164427933-960804036.png" alt="img"></p>
+<p>上述公式含义：以$a_i$为概率和对应位置$x_i$的狄拉克δ函数值乘积的累加和。下图很好地阐述了一组不同元素点的概率向量分布：</p>
+<p> <img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/927750-20210312164445217-1263610359.png" alt="img"></p>
+<p>上图中红色点是均匀的概率分布，蓝色点是任意的概率分布。点状分布对应是一维数据的概率向量分布，而点云状分布对应的是二维数据的概率向量分布。</p>
+<h3 id="3-2-蒙日-Monge-问题"><a href="#3-2-蒙日-Monge-问题" class="headerlink" title="3.2 蒙日(Monge)问题"></a>3.2 蒙日(Monge)问题</h3><p>蒙日(Monge)问题的定义：找出从一个 measure(测度)到另一个measure的映射，使得所有$c ( x_i , y_j )$的和最小，其中$c$表示映射路线的运输代价，需要根据具体应用定义。蒙日问题具体的定义公式如下：</p>
+<p> <img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/927750-20210312164508270-1219532574.png" alt="img"></p>
+<p>对于上述公式的解释可以采用离散测度来解释，对于两个离散测度：</p>
+<p> <img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/927750-20210312164519132-1669442012.png" alt="img"></p>
+<p>找到一个n维映射到m维的一个映射<img src="https://img2020.cnblogs.com/blog/927750/202103/927750-20210312164530094-298942662.png" alt="img">，使得</p>
+<p> <img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/927750-20210312164541088-1112379002.png" alt="img"></p>
+<p>上述映射的示意图如下：</p>
+<p> <img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/927750-20210312164552388-995624370.png" alt="img"></p>
+<p>对于上述的映射公式，结合蒙日问题的定义公式，可以归纳如下：</p>
+<p><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/927750-20210312164603385-1199671036.png" alt="img"></p>
+<p>上述公式的含义：通过这个映射$T(x_i)$的转移，使得转移到$b_j$的所有$a_i$的值的和刚好等于$b_j$（其中要求，所有$a_i$必须转走，而所有$b_j$必须收到预期的货物），即我需要多少就给运输转移多少，不能多也不能少。其中$c()$表示运输代价，$T(x_i)$表示映射的运输方案。</p>
+<h3 id="3-3-Kantorovich-Relaxation-松弛的蒙日问题"><a href="#3-3-Kantorovich-Relaxation-松弛的蒙日问题" class="headerlink" title="3.3 Kantorovich Relaxation (松弛的蒙日问题)"></a>3.3 Kantorovich Relaxation (松弛的蒙日问题)</h3><p>蒙日问题是最优运输的起初最重要的思想，然而其有一个很大的缺点: 从a的所有货物运输到b时，只能采用原始的货物大小进行运算，即不能对原始的货物进行拆开发送到不同目的地。而Kantorovich Relaxation则对蒙日问题进行了松弛处理，即原始的货物可以分开发送到不同目的地，也可以把蒙日问题理解为Kantorovich Relaxation的一个映射运输特例。具体区别可以参考下图[2]。</p>
+<p><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/927750-20210312164631292-910603132.png" alt="img"></p>
+<p>符合Kantorovich Relaxation的映射运输定义公式如下：</p>
+<p><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/927750-20210312164648582-1519254757.png" alt="img"></p>
+<p>区别于蒙日问题要求映射运输的所有$a_i$一对一转走到$b_j$。Kantorovich Relaxation只要求，所有每个$a_i$中获取能够完全转走，可以是只转给一个$b_j$，也可以是多个$b_j$，但是要确保每个$b_j$只需要收取预期要求的货物即可。简单地描述：<strong>行求和对应向量a</strong>, <strong>列向量求和对应向量 b</strong>.具体的传输示例如下：</p>
+<p> <img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/927750-20210312164703284-644792148.png" alt="img"></p>
+<p>最后，Kantorovich Relaxation的最优运输求解公式定义如下：</p>
+<p><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/927750-20210312164713992-32805890.png" alt="img"></p>
+<p>其中P表示符合所有行求和为向量a，所有列求和为向量b的一个映射。Pi,j表示从第i行映射到第j行的元素值，Ci,j表示完成Pi,j元素映射（或者说是运输）的运输代价。</p>
+<h3 id="3-5-最优运输问题求解"><a href="#3-5-最优运输问题求解" class="headerlink" title="3.5 最优运输问题求解"></a>3.5 最优运输问题求解</h3><p><img src="https://pic3.zhimg.com/80/v2-9b0e33a63e25d6ffe9c09c1752c0194e_720w.webp" alt="img"></p>
+<h4 id="3-5-1-熵-Entropic-正则化"><a href="#3-5-1-熵-Entropic-正则化" class="headerlink" title="3.5.1 熵(Entropic)正则化"></a>3.5.1 熵(Entropic)正则化</h4><p><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/image-20230104193601750.png" alt="image-20230104193601750"></p>
+<p><strong>H</strong>(<strong>P</strong>)即为正则化的代价函数，是整个概念的核心。</p>
+<p>那么加上正则化的最优传输问题则变为</p>
+<p><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/image-20230104193652371.png" alt="image-20230104193652371"></p>
+<p>这里的$ε$是个正则化系数，它的大小决定正则化作用的强度，道理和神经网络里的正则化系数是完全一样的。</p>
+<p>那么我们来分析正则化的作用。</p>
+<p>$\sum<em>{i, j} \mathbf{P}</em>{i, j}=1$ 所以 $\log \left(\mathbf{P}_{i, j}\right)&lt;0$ 绝对成立</p>
+<p>同样一个单位的质量转移，如果是分布在少数的$\mathbf{P}<em>{i,j}$上，每个$\mathbf{P}</em>{i,j}$取值较大的情况代价会大于将质量分布在多个$ \mathbf{P}<em>{i,j}$上，每个$\mathbf{P}</em>{i,j}$取值很小的情况。</p>
+<p><strong>换句话说，正则化鼓励利用多数小流量路径的传输，而惩罚稀疏的，利用少数大流量路径的传输，由此达到减少计算复杂度的目的。</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20190426143557768.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1V0dGVybHlfQm9ua2Vycw==,size_16,color_FFFFFF,t_70" alt="正则化的作用"></p>
+<p>可以看到，在$ε$取值较小时，传输集中使用少数路径，然而当$ε$取值变大，正则化传输的最优解变得更加“扁平”，使用更多的路径进行传输。</p>
+<h4 id="3-5-2-Sinkhorn算法-NIPS-2013"><a href="#3-5-2-Sinkhorn算法-NIPS-2013" class="headerlink" title="3.5.2  Sinkhorn算法 (NIPS, 2013)"></a>3.5.2  Sinkhorn算法 (NIPS, 2013)</h4><p>熵正则化仍然是一个概念，需要一个有效的算法，才能够释放它的潜力。</p>
+<p>得到Sinkhorn算法的第一步在于换一种方式表达正则化后的问题</p>
+<p>正则化后的Kantorovich问题的解可以写为以下形式：</p>
+<p><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/image-20230104195916512.png" alt="image-20230104195916512"></p>
+<p>其中：</p>
+<p><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/image-20230104200125174.png" alt="image-20230104200125174"></p>
+<p><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/image-20230104200441847.png" alt="image-20230104200441847"></p>
+<p>因为 $P=diag(u)Kdiag(v)$，而且根据之前的 “<strong>行求和对应向量a</strong>, <strong>列向量求和对应向量 b</strong>”的条件，</p>
+<p>所以有:</p>
+<script type="math/tex; mode=display">
+diag(u) K diag(v)1m=a,diag(v) K^T diag(u)1m=b</script><p>即</p>
+<p><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/image-20230104201232084.png" alt="image-20230104201232084"></p>
+<p>综上：P满足$P<em>{i,j} = u_iK</em>{i,j}v_j$，其中 u和v 要满足：$u\odot (Kv) = a$且$v\odot(K^Tu)=b$<br>。</p>
+<p>这里$\odot$是元素对应的乘积。</p>
+<p>这一对等式属于一类叫做matrix scaling的数学问题(matrix scaling problem)，于是可以通过迭代方式求解，这两条等式作为之后迭代的收敛条件。</p>
+<p>初始化：</p>
+<script type="math/tex; mode=display">
+v^{(0)}=1m</script><p>也就是将v中每个元素都设为1</p>
+<p><strong>每一步先更新u满足左侧等式，再更新v满足右侧等式，最终迭代收敛</strong>，两侧等式同时满足，我们就得到了最优解</p>
+<p><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/image-20230104202302693.png" alt="image-20230104202302693"></p>
+<p>收敛后，再计算 P即可。</p>
+<h1 id="3-参考链接"><a href="#3-参考链接" class="headerlink" title="3. 参考链接"></a>3. 参考链接</h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/liuzhen1995/p/14524932.html">最优运输（Optimal Transfort）：从理论到填补的应用 - 舞动的心 - 博客园 (cnblogs.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Hungryof/article/details/110549879">最优传输之浅谈<em>Hungryof的博客-CSDN博客</em>最优传输</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Utterly_Bonkers/article/details/90746259"> 最优传输-Sinkhorn算法（第九篇）_Utterly Bonkers的博客-CSDN博客_sinkhorn</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/462458966">最优传输理论 Optimal Transport - 知乎 (zhihu.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/551134022">Optimal Transport (OT) 最优传输-简介 - 知乎 (zhihu.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/94978686">计算最优传输（Computational Optimal Transport） - 知乎 (zhihu.com)</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">kakaluoto</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://kakaluoto.xyz/2023/01/05/Optimal%20Transport%E6%9C%80%E4%BC%98%E4%BC%A0%E8%BE%93/">http://kakaluoto.xyz/2023/01/05/Optimal%20Transport%E6%9C%80%E4%BC%98%E4%BC%A0%E8%BE%93/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></div><div class="post_share"><div class="social-share" data-image="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/5466.webp" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/02/15/OTA%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><img class="prev-cover" src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/timg2.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">【标签分配】OTA阅读笔记</div></div></a></div><div class="next-post pull-right"><a href="/2023/01/04/%E4%BD%BF%E7%94%A8Frp%20+%20VNC%E9%85%8D%E7%BD%AE%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2%E6%9D%82%E8%AE%B0/"><img class="next-cover" src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/16631.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">【内网穿透】使用Frp + VNC配置远程桌面杂记</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2022/12/17/FCOS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="【目标检测】FCOS学习笔记"><img class="cover" src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171649832.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-17</div><div class="title">【目标检测】FCOS学习笔记</div></div></a></div><div><a href="/2021/11/30/Factorization%20Machines/" title="【机器学习】推荐系统 Factorization Machines 因子分解机"><img class="cover" src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212172015099.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-11-30</div><div class="title">【机器学习】推荐系统 Factorization Machines 因子分解机</div></div></a></div><div><a href="/2022/12/16/Retinanet%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="【目标检测】Retinanet学习笔记"><img class="cover" src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171832604.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-16</div><div class="title">【目标检测】Retinanet学习笔记</div></div></a></div><div><a href="/2022/11/18/YOLOv1-v3%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="【目标检测】YOLOv1-v3学习笔记"><img class="cover" src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212172022770.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-18</div><div class="title">【目标检测】YOLOv1-v3学习笔记</div></div></a></div><div><a href="/2021/11/20/bert_finetune/" title="【机器学习】Bert微调"><img class="cover" src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212172011962.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-11-20</div><div class="title">【机器学习】Bert微调</div></div></a></div><div><a href="/2021/10/14/self_attention/" title="【机器学习】自注意力"><img class="cover" src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212172021723.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-14</div><div class="title">【机器学习】自注意力</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171726052.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">kakaluoto</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">32</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">34</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Kakaluoto"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E6%9C%80%E4%BC%98%E4%BC%A0%E8%BE%93"><span class="toc-number">1.</span> <span class="toc-text">1. 什么是最优传输</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">2.</span> <span class="toc-text">2. 基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E7%A6%BB%E6%95%A3%E6%B5%8B%E5%BA%A6-Discrete-measures"><span class="toc-number">2.1.</span> <span class="toc-text">3.1 离散测度 (Discrete measures)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E8%92%99%E6%97%A5-Monge-%E9%97%AE%E9%A2%98"><span class="toc-number">2.2.</span> <span class="toc-text">3.2 蒙日(Monge)问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-Kantorovich-Relaxation-%E6%9D%BE%E5%BC%9B%E7%9A%84%E8%92%99%E6%97%A5%E9%97%AE%E9%A2%98"><span class="toc-number">2.3.</span> <span class="toc-text">3.3 Kantorovich Relaxation (松弛的蒙日问题)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-%E6%9C%80%E4%BC%98%E8%BF%90%E8%BE%93%E9%97%AE%E9%A2%98%E6%B1%82%E8%A7%A3"><span class="toc-number">2.4.</span> <span class="toc-text">3.5 最优运输问题求解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-5-1-%E7%86%B5-Entropic-%E6%AD%A3%E5%88%99%E5%8C%96"><span class="toc-number">2.4.1.</span> <span class="toc-text">3.5.1 熵(Entropic)正则化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-5-2-Sinkhorn%E7%AE%97%E6%B3%95-NIPS-2013"><span class="toc-number">2.4.2.</span> <span class="toc-text">3.5.2  Sinkhorn算法 (NIPS, 2013)</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-number"></span> <span class="toc-text">3. 参考链接</span></a></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/12/06/03_C++%E4%B8%AD%E7%9A%84%E9%9D%99%E6%80%81/" title="【03】【C++】C++中的静态"><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/2023_12_05_1.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【03】【C++】C++中的静态"/></a><div class="content"><a class="title" href="/2024/12/06/03_C++%E4%B8%AD%E7%9A%84%E9%9D%99%E6%80%81/" title="【03】【C++】C++中的静态">【03】【C++】C++中的静态</a><time datetime="2024-12-05T16:00:00.000Z" title="Created 2024-12-06 00:00:00">2024-12-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/11/14/02_C++%E7%B1%BB/" title="【02】【C++】C++类"><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/2021_10_19_6.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【02】【C++】C++类"/></a><div class="content"><a class="title" href="/2024/11/14/02_C++%E7%B1%BB/" title="【02】【C++】C++类">【02】【C++】C++类</a><time datetime="2024-11-13T16:00:00.000Z" title="Created 2024-11-14 00:00:00">2024-11-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/07/11/Redis/" title="【Redis】Redis 极简入门课件"><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/2021_03_13_2.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【Redis】Redis 极简入门课件"/></a><div class="content"><a class="title" href="/2023/07/11/Redis/" title="【Redis】Redis 极简入门课件">【Redis】Redis 极简入门课件</a><time datetime="2023-07-10T16:00:00.000Z" title="Created 2023-07-11 00:00:00">2023-07-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/06/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9D%82%E8%AE%B0(%E4%B8%80)%E4%B9%8BJDBC/" title="【数据库】数据库杂记(一)之JDBC"><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/2022_06_01_10.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【数据库】数据库杂记(一)之JDBC"/></a><div class="content"><a class="title" href="/2023/06/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9D%82%E8%AE%B0(%E4%B8%80)%E4%B9%8BJDBC/" title="【数据库】数据库杂记(一)之JDBC">【数据库】数据库杂记(一)之JDBC</a><time datetime="2023-06-06T16:00:00.000Z" title="Created 2023-06-07 00:00:00">2023-06-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/05/19/%E5%A6%82%E4%BD%95%E7%A7%91%E5%AD%A6%E5%9C%B0%E5%88%A9%E7%94%A8%E9%AB%98%E5%85%89%E8%B0%B1%E5%9B%BE%E5%83%8F%E5%90%88%E6%88%90%E5%AF%B9%E5%BA%94%E7%9A%84RGB%E5%9B%BE%E5%83%8F/" title="【高光谱】如何科学地利用高光谱图像合成对应的RGB图像?"><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/8076.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【高光谱】如何科学地利用高光谱图像合成对应的RGB图像?"/></a><div class="content"><a class="title" href="/2023/05/19/%E5%A6%82%E4%BD%95%E7%A7%91%E5%AD%A6%E5%9C%B0%E5%88%A9%E7%94%A8%E9%AB%98%E5%85%89%E8%B0%B1%E5%9B%BE%E5%83%8F%E5%90%88%E6%88%90%E5%AF%B9%E5%BA%94%E7%9A%84RGB%E5%9B%BE%E5%83%8F/" title="【高光谱】如何科学地利用高光谱图像合成对应的RGB图像?">【高光谱】如何科学地利用高光谱图像合成对应的RGB图像?</a><time datetime="2023-05-18T16:00:00.000Z" title="Created 2023-05-19 00:00:00">2023-05-19</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><img src="https://count.getloli.com/get/@:kakaluoto?theme=rule34" alt=":rule34" /><div class="copyright">&copy;2020 - 2024 By kakaluoto</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a><img src="https://s1.ax1x.com/2023/01/05/pSkLKAJ.png" style="width:18px;height:18px;margin-bottom:-3px" alt="MOE ICP">
+<a href="https://icp.gov.moe/?keyword=20220014" target="_blank">萌ICP备20220014号</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">Local search</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'VV8NE4j4SUD2gK92gRMlO6VD-gzGzoHsz',
+      appKey: 'vxvwE6rJ0XETwlNkTzBoOkSU',
+      placeholder: 'Please leave your footprints',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'en',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+      requiredFields: ["nick,mail"],
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="/js/jquery.min.js"></script><script src="/js/szgotop.js"></script><div class="back-to-top cd-top faa-float animated cd-is-visible" style="top:-900px;"></div><div class="aplayer no-destroy" data-id="498105854" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="false" data-lrcType="0"> </div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.removeEventListener('scroll', window.tocScrollFn)
+  window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_clock_anzhiyu_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock_anzhiyu')
+    if(parent_div_git) {
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var qweather_key = 'b16a1fa0e63c46a4b8f28abfb06ae3fe';
+  var gaud_map_key = 'e2b04289e870b005374ee030148d64fd&s=rsv3';
+  var baidu_ak_key = 'undefined';
+  var flag = 0;
+  var clock_rectangle = '112.982279,28.19409';
+  var clock_default_rectangle_enable = 'false';
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  </script><script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script><script data-pjax src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>

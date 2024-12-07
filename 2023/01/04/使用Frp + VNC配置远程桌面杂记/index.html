@@ -1,0 +1,463 @@
+<!DOCTYPE html><html lang="zh-Hans" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>【内网穿透】使用Frp + VNC配置远程桌面杂记 | Kakaluoto's Blog</title><meta name="keywords" content="网络"><meta name="author" content="kakaluoto"><meta name="copyright" content="kakaluoto"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="一. VNC部分参考链接Jetson nano(Ubuntu18.04) 网线连接电脑，实现VNC远程桌面_PiQiuNi的博客-CSDN博客_jetson nano连接电脑 本文通过网线连接jetson nano(Ubuntu18.04) 与windows电脑，实现了网络共享及VNC远程桌面访问配置Jetson nano (此过程需要连接屏幕及外设)以下内容来自系统自带文档 “README-vn">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【内网穿透】使用Frp + VNC配置远程桌面杂记">
+<meta property="og:url" content="http://kakaluoto.xyz/2023/01/04/%E4%BD%BF%E7%94%A8Frp%20+%20VNC%E9%85%8D%E7%BD%AE%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2%E6%9D%82%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Kakaluoto&#39;s Blog">
+<meta property="og:description" content="一. VNC部分参考链接Jetson nano(Ubuntu18.04) 网线连接电脑，实现VNC远程桌面_PiQiuNi的博客-CSDN博客_jetson nano连接电脑 本文通过网线连接jetson nano(Ubuntu18.04) 与windows电脑，实现了网络共享及VNC远程桌面访问配置Jetson nano (此过程需要连接屏幕及外设)以下内容来自系统自带文档 “README-vn">
+<meta property="og:locale">
+<meta property="og:image" content="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/16631.webp">
+<meta property="article:published_time" content="2023-01-03T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-12-07T10:10:40.952Z">
+<meta property="article:author" content="kakaluoto">
+<meta property="article:tag" content="网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/16631.webp"><link rel="shortcut icon" href="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171725027.png"><link rel="canonical" href="http://kakaluoto.xyz/2023/01/04/%E4%BD%BF%E7%94%A8Frp%20+%20VNC%E9%85%8D%E7%BD%AE%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2%E6%9D%82%E8%AE%B0/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"We didn't find any results for the search: ${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":false,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '【内网穿透】使用Frp + VNC配置远程桌面杂记',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-12-07 18:10:40'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    document.addEventListener('pjax:complete', detectApple)})(window)</script><link rel="stylesheet" href="/css/mouse.css"><link rel="stylesheet" href="/css/footer.css"><link rel="stylesheet" href="/css/szgotop.css" /><script src="/js/jquery.min.js"></script><div id="aplayer"></div><script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js" async></script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.css" /><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171726052.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">32</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">34</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/16631.webp')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Kakaluoto's Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">【内网穿透】使用Frp + VNC配置远程桌面杂记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2023-01-03T16:00:00.000Z" title="Created 2023-01-04 00:00:00">2023-01-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-12-07T10:10:40.952Z" title="Updated 2024-12-07 18:10:40">2024-12-07</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="【内网穿透】使用Frp + VNC配置远程桌面杂记"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="一-VNC部分"><a href="#一-VNC部分" class="headerlink" title="一. VNC部分"></a>一. VNC部分</h1><p>参考链接<a target="_blank" rel="noopener" href="https://blog.csdn.net/PiQiuNi/article/details/123798298">Jetson nano(Ubuntu18.04) 网线连接电脑，实现VNC远程桌面_PiQiuNi的博客-CSDN博客_jetson nano连接电脑</a></p>
+<p>本文通过网线连接jetson nano(Ubuntu18.04) 与windows电脑，实现了网络共享及VNC远程桌面访问<br>配置Jetson nano (此过程需要连接屏幕及外设)<br>以下内容来自系统自带文档 “README-vnc.txt”</p>
+<p>安装VNC</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt install vino</span><br></pre></td></tr></table></figure>
+<p>开启VNC服务<br>实现开机自动启动</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/.config/autostart</span><br><span class="line">cp /usr/share/applications/vino-server.desktop ~/.config/autostart</span><br></pre></td></tr></table></figure>
+<p>配置VNC服务</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gsettings set org.gnome.Vino prompt-enabled false</span><br><span class="line">gsettings set org.gnome.Vino require-encryption false</span><br></pre></td></tr></table></figure>
+<p>设置连接密码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gsettings set org.gnome.Vino authentication-methods &quot;[&#x27;vnc&#x27;]&quot;</span><br><span class="line">gsettings set org.gnome.Vino vnc-password $(echo -n &#x27;你的密码&#x27;|base64)</span><br></pre></td></tr></table></figure>
+<p>设置无屏幕启动分辨率</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/X11/xorg.conf </span><br></pre></td></tr></table></figure>
+<p>在文件末尾插入以下内容（可自行设置分辨率）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Section &quot;Screen&quot;</span><br><span class="line">   Identifier    &quot;Default Screen&quot;</span><br><span class="line">   Monitor       &quot;Configured Monitor&quot;</span><br><span class="line">   Device        &quot;Tegra0&quot;</span><br><span class="line">   SubSection &quot;Display&quot;</span><br><span class="line">       Depth    24</span><br><span class="line">       Virtual 1280 800 # Modify the resolution by editing these values</span><br><span class="line">   EndSubSection</span><br><span class="line">EndSection</span><br></pre></td></tr></table></figure>
+<p>重启jetsonnano</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo reboot</span><br></pre></td></tr></table></figure>
+<h1 id="二-frp部分"><a href="#二-frp部分" class="headerlink" title="二. frp部分"></a>二. frp部分</h1><p>参考链接<a target="_blank" rel="noopener" href="https://blog.csdn.net/y459541195/article/details/102522290">VNC+frp实现远程访问Ubuntu和树莓派_圆滚熊的博客-CSDN博客</a></p>
+<h3 id="搭建方式一：有公网服务器情况下"><a href="#搭建方式一：有公网服务器情况下" class="headerlink" title="搭建方式一：有公网服务器情况下"></a>搭建方式一：有公网服务器情况下</h3><h3 id="1-准备"><a href="#1-准备" class="headerlink" title="1.准备"></a>1.准备</h3><ol>
+<li><strong>公网服务器一台</strong>（腾讯云，阿里云，华为云等服务器均可）</li>
+<li><strong>内网穿透工具 frp</strong> （免费开源）</li>
+<li><strong>远程控制软件 RealVNC</strong></li>
+</ol>
+<h3 id="2-服务器上部署（服务端）"><a href="#2-服务器上部署（服务端）" class="headerlink" title="2.服务器上部署（服务端）"></a>2.服务器上部署（服务端）</h3><p>首先了解一下frp是什么？<br>frp是一个可用于内部网穿透的高级反向代理应用程序，支持tcp，udp协议，为http和https应用协议提供了额外的能力，并且尝试性支持了点对点穿透。<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132102454.png" alt="在这里插入图片描述"></p>
+<ul>
+<li><strong>第一步</strong>：<strong>下载frp到公网服务器</strong></li>
+</ul>
+<p>登录公网服务器下载frp，frp下载地址：<a target="_blank" rel="noopener" href="https://github.com/fatedier/frp/releases">https://github.com/fatedier/frp/releases</a><br>找到对应版本下载<br>（注:可以输入arch，查看cpu架构，云服务和Ubuntu16.0.4都是x86_64处理器架构，所以下载amd64的包）<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132103897.png" alt="在这里插入图片描述"><br>这里下载的是当前更新的最新版frp_0.29.0_linux_amd64.tar.gz</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/fatedier/frp/releases/download/v0.29.0/frp_0.29.0_linux_amd64.tar.gz</span><br></pre></td></tr></table></figure>
+<p><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132103364.png" alt="在这里插入图片描述"><br>可能下载有点慢，等待一会儿</p>
+<ul>
+<li><strong>第二步</strong>：<strong>配置frp</strong></li>
+</ul>
+<p>下载完之后进行解压：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -xzvf frp_0.29.0_linux_amd64.tar.gz</span><br></pre></td></tr></table></figure>
+<p><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132103706.png" alt="在这里插入图片描述"><br>解压之后，找到frps.ini这个文件，并打开：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd frp_0.29.0_linux_amd64</span><br><span class="line">sudo nano frps.ini</span><br></pre></td></tr></table></figure>
+<p>参考frps_full.ini，添加一下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[common]</span><br><span class="line">bind_port = 7000  </span><br><span class="line"></span><br><span class="line">token = 12345678  </span><br><span class="line"></span><br><span class="line">dashboard_port = 7500 </span><br><span class="line">dashboard_user = admin </span><br><span class="line">dashboard_pwd = admin</span><br><span class="line"></span><br><span class="line">max_pool_count = 5</span><br><span class="line">log_file = ./frps.log  </span><br><span class="line">log_level = info</span><br><span class="line">log_max_days = 3</span><br></pre></td></tr></table></figure>
+<p><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132103217.png" alt="在这里插入图片描述"><br>保存，退出。<br>把云服务器的7000,7500等相应的端口放行。我这里的后台管理端口是7600，不是上面的 7500。<br>在当前目录下运行frps:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup ./frps -c ./frps.ini &amp;</span><br></pre></td></tr></table></figure>
+<p>查看7600端口是否在监听</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -ap | grep 7600</span><br></pre></td></tr></table></figure>
+<p><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132103611.png" alt="在这里插入图片描述"><br>测试后台能否打开：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#云服务器公网ip + 7600</span><br><span class="line">http://x.x.x.x:7600</span><br></pre></td></tr></table></figure>
+<p>记得x.x.x.x替换为自己公网ip地址，提示输入账户密码，默认admin<br>界面是这样的：<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132103341.png" alt="在这里插入图片描述"><br>至此，服务端frp部署成功了</p>
+<h3 id="3-Ubuntu上部署（客户端）"><a href="#3-Ubuntu上部署（客户端）" class="headerlink" title="3. Ubuntu上部署（客户端）"></a>3. Ubuntu上部署（客户端）</h3><ul>
+<li><strong>第一步：Ubuntu打开桌面共享</strong></li>
+</ul>
+<p>这里操作的Ubuntu系统版本是16.0.4<br>搜索出桌面共享，输入sharing<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132103980.png" alt="在这里插入图片描述"><br>点击打开“Desktop Sharing”，勾选如下配置：</p>
+<p><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132103789.png" alt="在这里插入图片描述"><br>第3那里要设置访问密码，并记住。</p>
+<ul>
+<li><strong>第二步：配置frpc</strong></li>
+</ul>
+<p>下载frp_0.29.0_linux_amd64.tar.gz，解压后打开frpc.ini</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tar -xzvf frp_0.29.0_linux_amd64.tar.gz</span><br><span class="line">cd frp_0.29.0_linux_amd64</span><br><span class="line">sudo nano frpc.ini</span><br></pre></td></tr></table></figure>
+<p>添加一下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[common]</span><br><span class="line">server_addr = x.x.x.x  </span><br><span class="line">server_port = 7000   </span><br><span class="line">token = 12345678	  </span><br><span class="line"></span><br><span class="line">[ubuntu-ssh]         </span><br><span class="line">type = tcp</span><br><span class="line">local_ip = 127.0.0.1</span><br><span class="line">local_port = 22</span><br><span class="line">remote_port = 8085  </span><br><span class="line"></span><br><span class="line">[ubuntu-vnc]        </span><br><span class="line">type = tcp</span><br><span class="line">local_ip = 127.0.0.1</span><br><span class="line">local_port = 5900 </span><br><span class="line">remote_port = 5910   </span><br></pre></td></tr></table></figure>
+<p>x.x.x.x要替换为自己的公网ip<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132103176.png" alt="在这里插入图片描述"><br>在当前目录下运行frpc.ini文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup ./frpc -c ./frpc.ini &amp;</span><br></pre></td></tr></table></figure>
+<p><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132103248.png" alt="在这里插入图片描述"><br>查看一下后台，看看是否在线<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132103172.png" alt="在这里插入图片描述"><br>说明部署成功了。</p>
+<ul>
+<li><strong>第三步：加入开机启动</strong></li>
+</ul>
+<p>打开Ubuntu的/etc/rc.local开机启动文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nano /etc/rc.local</span><br></pre></td></tr></table></figure>
+<p>添加自己的文件启动路径：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup  x/x/frpc -c x/x/frpc.ini &amp;</span><br></pre></td></tr></table></figure>
+<p>x/x/需要替换掉，如果不知道frpc路径，可以</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pwd</span><br></pre></td></tr></table></figure>
+<p><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132103259.png" alt="在这里插入图片描述"><br>这里的路径如下：<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132103527.png" alt="在这里插入图片描述"><br>添加完之后，保存退出。</p>
+<h3 id="4-树莓派上部署（客户端）"><a href="#4-树莓派上部署（客户端）" class="headerlink" title="4.树莓派上部署（客户端）"></a>4.树莓派上部署（客户端）</h3><p>这里用的是树莓派3b+<br>下载的是arm文件：<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132103896.png" alt="在这里插入图片描述"><br>下载后解压，同样是打开frpc.ini文件：<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132103389.png" alt="在这里插入图片描述"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nano frpc.ini</span><br></pre></td></tr></table></figure>
+<p>和上面Ubuntu配置frpc一样，只是改了端口和名称，箭头所示：<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132103014.png" alt="在这里插入图片描述"><br>记得云服务器上开放相应端口段，如：5900-6000，22, 80等。</p>
+<p><strong>加入开机启动：</strong><br>刚开始尝试了直接在 rc.local里启动frpc失败。<br>参考这篇博文：<a target="_blank" rel="noopener" href="https://blog.csdn.net/zmy12007/article/details/84642081，树莓派开机后让frpc.ini延迟启动即可">https://blog.csdn.net/zmy12007/article/details/84642081，树莓派开机后让frpc.ini延迟启动即可</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nano startfrpc.sh</span><br></pre></td></tr></table></figure>
+<p>添加一下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#/bin/bash</span><br><span class="line">cd /home/pi/frp_0.29.0_linux_arm</span><br><span class="line">echo &quot;start frpc from shell&quot; &gt;&gt; ./log.txt</span><br><span class="line">sleep 15s</span><br><span class="line">nohup ./frpc -c ./frpc.ini &amp;</span><br></pre></td></tr></table></figure>
+<p><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132103903.png" alt="在这里插入图片描述"><br>保存退出<br>添加文件权限</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod +x startfrpc.sh</span><br></pre></td></tr></table></figure>
+<p>接着打开rc.local文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nano /etc/rc.local</span><br></pre></td></tr></table></figure>
+<p>添加如下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;start rc.local&quot; &gt; /home/pi/rc.log</span><br><span class="line"></span><br><span class="line">nohup /bin/bash /home/pi/startfrpc.sh &amp;</span><br></pre></td></tr></table></figure>
+<p><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132103909.png" alt="在这里插入图片描述"><br>保存， 退出<br>重启树莓派：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo reboot</span><br></pre></td></tr></table></figure>
+<p>查看一下后台，看看是否在线：<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132104961.png" alt="在这里插入图片描述"><br>至此，树莓派部署成功了。</p>
+<h3 id="5-远程连接"><a href="#5-远程连接" class="headerlink" title="5.远程连接"></a>5.远程连接</h3><p>这里用win10系统连接Ubuntu和树莓派</p>
+<p><strong>5.1 远程连接Ubuntu</strong></p>
+<p><strong>vnc连接：</strong><br>到官网下载vnc:<a target="_blank" rel="noopener" href="https://www.realvnc.com/en/connect/download/viewer/相对应版本的vnc">https://www.realvnc.com/en/connect/download/viewer/相对应版本的vnc</a> viewer<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132104754.png" alt="在这里插入图片描述"><br>下载后安装，打开VNC Viewer软件<br>输入 <strong>公网ip + 端口号</strong></p>
+<p><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132104038.png" alt="在这里插入图片描述"><br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132104148.png" alt="在这里插入图片描述"><br>这个密码是Ubuntu桌面共享时配置的密码，输入密码后确定，这样就完成了远程了连接<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132104328.png" alt="在这里插入图片描述"><br><strong>ssh连接：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -oPort=8085 ubuntu@x.x.x.x</span><br></pre></td></tr></table></figure>
+<p>端口8085，ubuntu 为用户名 ，x.x.x.x为公网ip<br>此时，出现了错误：<br>ssh_exchange_identification: Connection closed by remote host<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132104356.png" alt="在这里插入图片描述"><br>查看ssh是否安装：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ps -e |grep ssh</span><br></pre></td></tr></table></figure>
+<p><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132104994.png" alt="在这里插入图片描述"><br>结果没有安装，需要安装一下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install openssh-server</span><br></pre></td></tr></table></figure>
+<p>再次查看sudo ps -e |grep ssh是否安装<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132104603.png" alt="在这里插入图片描述"><br>出现了sshd，说明安装成功了。<br>再次尝试ssh:<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132104339.png" alt="在这里插入图片描述"><br>出现了错误“ <code>WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!</code>”，打开<code>C:\Users\Administrator\.ssh</code>下文件，用记事本打开known_hosts，删除选中的部分<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132104131.png" alt="在这里插入图片描述"><br>再试一下，输入ubuntu登录密码成功：<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132104103.png" alt="在这里插入图片描述"></p>
+<p><strong>5.2 远程连接树莓派</strong></p>
+<p><strong>vnc连接：</strong><br>打开树莓派的vnc和ssh:<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132104832.png" alt="在这里插入图片描述"><br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132104322.png" alt="在这里插入图片描述"><br>重启树莓派</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reboot</span><br></pre></td></tr></table></figure>
+<p>重启后右上角会出现vnc图标，单击图标打开，选择Option选项<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132104032.png" alt="在这里插入图片描述"><br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132104157.png" alt="在这里插入图片描述"><br>安全项，进行访问密码配置，记住密码</p>
+<p>在win10上，打来VNC Viewer软件，输入<code>公网ip+端口</code>，再输入访问密码<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132104783.png" alt="在这里插入图片描述"><br>远程访问成功<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132104556.png" alt="在这里插入图片描述"><br><strong>ssh连接：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -oPort=8086 pi@x.x.x.x</span><br></pre></td></tr></table></figure>
+<p>端口8086，pi为用户名 ，x.x.x.x为公网ip<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132104815.png" alt="在这里插入图片描述"><br>ssh连接成功！</p>
+<h3 id="搭建方式二：无公网服务器情况下"><a href="#搭建方式二：无公网服务器情况下" class="headerlink" title="搭建方式二：无公网服务器情况下"></a>搭建方式二：无公网服务器情况下</h3><p>推荐这种搭建，方便快捷。注意：这里通过win10远程访问Ubuntu和树莓派，win10安装VNC Viewer ，而Ubuntu和树莓派安装的是VNC Server。当然Ubuntu和树莓派也可以安装VNC Viewer来远程访问其它设备，根据自己需求来。</p>
+<h3 id="1-Ubuntu上部署"><a href="#1-Ubuntu上部署" class="headerlink" title="1.Ubuntu上部署"></a>1.Ubuntu上部署</h3><h4 id="1-1-安装"><a href="#1-1-安装" class="headerlink" title="1.1 安装"></a>1.1 安装</h4><p>首先在ubuntu 上安装VNC Server。<br>可以到官网下载：<a target="_blank" rel="noopener" href="https://www.realvnc.com/en/connect/download/vnc/linux/">https://www.realvnc.com/en/connect/download/vnc/linux/</a><br>找到相对应的版本。<br>或者通过命令下载安装：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://www.realvnc.com/download/file/vnc.files/VNC-Server-<span class="number">6.4</span><span class="number">.1</span>-Linux-x64.deb</span><br></pre></td></tr></table></figure>
+<p>安装：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dpkg -i VNC-Server-<span class="number">6.4</span><span class="number">.1</span>-Linux-x64.deb</span><br></pre></td></tr></table></figure>
+<p><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132105866.png" alt="在这里插入图片描述"><br>查看运行情况：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps aux|grep vnc</span><br></pre></td></tr></table></figure>
+<p><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132105900.png" alt="在这里插入图片描述"><br>想要卸载的话：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get purge realvnc-vnc-server</span><br></pre></td></tr></table></figure>
+<p>卸载vnc viewer：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get purge realvnc-vnc-viewer</span><br></pre></td></tr></table></figure>
+<h4 id="1-2-配置"><a href="#1-2-配置" class="headerlink" title="1.2 配置"></a>1.2 配置</h4><p>在图形界面搜索VNC Server，输入Ubuntu管理员密码并打开<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132105627.png" alt="在这里插入图片描述"><br>右上角会有个图标，右击选择<code>Licensing...</code>打开<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132105453.png" alt="在这里插入图片描述"><br>弹出一个注册界面，没有VNC账号先注册一个</p>
+<p><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132105059.png" alt="在这里插入图片描述"><br>输入账号密码，点击<code>sign in</code>，出现如下界面：<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132105124.png" alt="在这里插入图片描述"><br>上图中填写的密码是你远程连接时候用到的密码，即<code>远程连接密码</code>，不能和vnc账户密码相同，填写一下，点击下一步，选择家庭订阅非商业用途（<code>Home subscription</code>）,接着点击next，起个名字，我这里是<code>ubuntu</code>，接着点击完成即可。<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132105981.png" alt="在这里插入图片描述"></p>
+<h4 id="1-3-连接"><a href="#1-3-连接" class="headerlink" title="1.3 连接"></a>1.3 连接</h4><p>接下来我们用win10远程连接乌班图，打开win10上的VNC Viewer<br>登录VNC账号，在地址栏中直接输入<code>ubuntu</code> ，输入<code>远程连接的密码</code><br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132105928.png" alt="在这里插入图片描述"><br>这样就连接上了，随时随地的访问远程电脑了。<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132105845.png" alt="在这里插入图片描述"></p>
+<h3 id="2-树莓派上部署"><a href="#2-树莓派上部署" class="headerlink" title="2.树莓派上部署"></a>2.树莓派上部署</h3><p>和ubuntu基本类似步骤，树莓派好的一点是已经预装的有vnc server了。<br>可以参考上面搭建方式一中的步骤打开树莓派的VNC<br>选择第一项，下一步<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132105194.png" alt="在这里插入图片描述"><br>设置访问名字，可以看到已经有一个存在了。<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132105431.png" alt="在这里插入图片描述"><br>点击Apply。完成退出</p>
+<p>在win10中的VNC Viewer 中登录账号就看到了要访问的树莓派。<br><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202306132105688.png" alt="在这里插入图片描述"><br>如果不想那么费事，或者没有云服务器的，还是推荐第二种搭建方式，整体体验上比第一种要流畅一些。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">kakaluoto</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://kakaluoto.xyz/2023/01/04/%E4%BD%BF%E7%94%A8Frp%20+%20VNC%E9%85%8D%E7%BD%AE%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2%E6%9D%82%E8%AE%B0/">http://kakaluoto.xyz/2023/01/04/%E4%BD%BF%E7%94%A8Frp%20+%20VNC%E9%85%8D%E7%BD%AE%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2%E6%9D%82%E8%AE%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BD%91%E7%BB%9C/">网络</a></div><div class="post_share"><div class="social-share" data-image="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/16631.webp" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/01/05/Optimal%20Transport%E6%9C%80%E4%BC%98%E4%BC%A0%E8%BE%93/"><img class="prev-cover" src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/5466.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">【最优传输】Optimal Transport最优传输笔记</div></div></a></div><div class="next-post pull-right"><a href="/2022/12/17/FCOS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><img class="next-cover" src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171649832.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">【目标检测】FCOS学习笔记</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/202212171726052.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">kakaluoto</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">32</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">34</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Kakaluoto"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80-VNC%E9%83%A8%E5%88%86"><span class="toc-number">1.</span> <span class="toc-text">一. VNC部分</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C-frp%E9%83%A8%E5%88%86"><span class="toc-number">2.</span> <span class="toc-text">二. frp部分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%90%AD%E5%BB%BA%E6%96%B9%E5%BC%8F%E4%B8%80%EF%BC%9A%E6%9C%89%E5%85%AC%E7%BD%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%83%85%E5%86%B5%E4%B8%8B"><span class="toc-number">2.0.1.</span> <span class="toc-text">搭建方式一：有公网服务器情况下</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%87%86%E5%A4%87"><span class="toc-number">2.0.2.</span> <span class="toc-text">1.准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E9%83%A8%E7%BD%B2%EF%BC%88%E6%9C%8D%E5%8A%A1%E7%AB%AF%EF%BC%89"><span class="toc-number">2.0.3.</span> <span class="toc-text">2.服务器上部署（服务端）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Ubuntu%E4%B8%8A%E9%83%A8%E7%BD%B2%EF%BC%88%E5%AE%A2%E6%88%B7%E7%AB%AF%EF%BC%89"><span class="toc-number">2.0.4.</span> <span class="toc-text">3. Ubuntu上部署（客户端）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E6%A0%91%E8%8E%93%E6%B4%BE%E4%B8%8A%E9%83%A8%E7%BD%B2%EF%BC%88%E5%AE%A2%E6%88%B7%E7%AB%AF%EF%BC%89"><span class="toc-number">2.0.5.</span> <span class="toc-text">4.树莓派上部署（客户端）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5"><span class="toc-number">2.0.6.</span> <span class="toc-text">5.远程连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%90%AD%E5%BB%BA%E6%96%B9%E5%BC%8F%E4%BA%8C%EF%BC%9A%E6%97%A0%E5%85%AC%E7%BD%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%83%85%E5%86%B5%E4%B8%8B"><span class="toc-number">2.0.7.</span> <span class="toc-text">搭建方式二：无公网服务器情况下</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Ubuntu%E4%B8%8A%E9%83%A8%E7%BD%B2"><span class="toc-number">2.0.8.</span> <span class="toc-text">1.Ubuntu上部署</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-%E5%AE%89%E8%A3%85"><span class="toc-number">2.0.8.1.</span> <span class="toc-text">1.1 安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-%E9%85%8D%E7%BD%AE"><span class="toc-number">2.0.8.2.</span> <span class="toc-text">1.2 配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-%E8%BF%9E%E6%8E%A5"><span class="toc-number">2.0.8.3.</span> <span class="toc-text">1.3 连接</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%A0%91%E8%8E%93%E6%B4%BE%E4%B8%8A%E9%83%A8%E7%BD%B2"><span class="toc-number">2.0.9.</span> <span class="toc-text">2.树莓派上部署</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/12/06/03_C++%E4%B8%AD%E7%9A%84%E9%9D%99%E6%80%81/" title="【03】【C++】C++中的静态"><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/2023_12_05_1.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【03】【C++】C++中的静态"/></a><div class="content"><a class="title" href="/2024/12/06/03_C++%E4%B8%AD%E7%9A%84%E9%9D%99%E6%80%81/" title="【03】【C++】C++中的静态">【03】【C++】C++中的静态</a><time datetime="2024-12-05T16:00:00.000Z" title="Created 2024-12-06 00:00:00">2024-12-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/11/14/02_C++%E7%B1%BB/" title="【02】【C++】C++类"><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/2021_10_19_6.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【02】【C++】C++类"/></a><div class="content"><a class="title" href="/2024/11/14/02_C++%E7%B1%BB/" title="【02】【C++】C++类">【02】【C++】C++类</a><time datetime="2024-11-13T16:00:00.000Z" title="Created 2024-11-14 00:00:00">2024-11-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/07/11/Redis/" title="【Redis】Redis 极简入门课件"><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/2021_03_13_2.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【Redis】Redis 极简入门课件"/></a><div class="content"><a class="title" href="/2023/07/11/Redis/" title="【Redis】Redis 极简入门课件">【Redis】Redis 极简入门课件</a><time datetime="2023-07-10T16:00:00.000Z" title="Created 2023-07-11 00:00:00">2023-07-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/06/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9D%82%E8%AE%B0(%E4%B8%80)%E4%B9%8BJDBC/" title="【数据库】数据库杂记(一)之JDBC"><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/2022_06_01_10.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【数据库】数据库杂记(一)之JDBC"/></a><div class="content"><a class="title" href="/2023/06/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9D%82%E8%AE%B0(%E4%B8%80)%E4%B9%8BJDBC/" title="【数据库】数据库杂记(一)之JDBC">【数据库】数据库杂记(一)之JDBC</a><time datetime="2023-06-06T16:00:00.000Z" title="Created 2023-06-07 00:00:00">2023-06-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/05/19/%E5%A6%82%E4%BD%95%E7%A7%91%E5%AD%A6%E5%9C%B0%E5%88%A9%E7%94%A8%E9%AB%98%E5%85%89%E8%B0%B1%E5%9B%BE%E5%83%8F%E5%90%88%E6%88%90%E5%AF%B9%E5%BA%94%E7%9A%84RGB%E5%9B%BE%E5%83%8F/" title="【高光谱】如何科学地利用高光谱图像合成对应的RGB图像?"><img src="https://kakaluoto-hexo-blog.oss-cn-guangzhou.aliyuncs.com/img/8076.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【高光谱】如何科学地利用高光谱图像合成对应的RGB图像?"/></a><div class="content"><a class="title" href="/2023/05/19/%E5%A6%82%E4%BD%95%E7%A7%91%E5%AD%A6%E5%9C%B0%E5%88%A9%E7%94%A8%E9%AB%98%E5%85%89%E8%B0%B1%E5%9B%BE%E5%83%8F%E5%90%88%E6%88%90%E5%AF%B9%E5%BA%94%E7%9A%84RGB%E5%9B%BE%E5%83%8F/" title="【高光谱】如何科学地利用高光谱图像合成对应的RGB图像?">【高光谱】如何科学地利用高光谱图像合成对应的RGB图像?</a><time datetime="2023-05-18T16:00:00.000Z" title="Created 2023-05-19 00:00:00">2023-05-19</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><img src="https://count.getloli.com/get/@:kakaluoto?theme=rule34" alt=":rule34" /><div class="copyright">&copy;2020 - 2024 By kakaluoto</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a><img src="https://s1.ax1x.com/2023/01/05/pSkLKAJ.png" style="width:18px;height:18px;margin-bottom:-3px" alt="MOE ICP">
+<a href="https://icp.gov.moe/?keyword=20220014" target="_blank">萌ICP备20220014号</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">Local search</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'VV8NE4j4SUD2gK92gRMlO6VD-gzGzoHsz',
+      appKey: 'vxvwE6rJ0XETwlNkTzBoOkSU',
+      placeholder: 'Please leave your footprints',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'en',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+      requiredFields: ["nick,mail"],
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="/js/jquery.min.js"></script><script src="/js/szgotop.js"></script><div class="back-to-top cd-top faa-float animated cd-is-visible" style="top:-900px;"></div><div class="aplayer no-destroy" data-id="498105854" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="false" data-lrcType="0"> </div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.removeEventListener('scroll', window.tocScrollFn)
+  window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_clock_anzhiyu_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock_anzhiyu')
+    if(parent_div_git) {
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var qweather_key = 'b16a1fa0e63c46a4b8f28abfb06ae3fe';
+  var gaud_map_key = 'e2b04289e870b005374ee030148d64fd&s=rsv3';
+  var baidu_ak_key = 'undefined';
+  var flag = 0;
+  var clock_rectangle = '112.982279,28.19409';
+  var clock_default_rectangle_enable = 'false';
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  </script><script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script><script data-pjax src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>
