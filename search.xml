@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>【04】【C++】C++中的枚举</title>
+      <link href="/2024/12/09/04_C++%E4%B8%AD%E7%9A%84%E6%9E%9A%E4%B8%BE/"/>
+      <url>/2024/12/09/04_C++%E4%B8%AD%E7%9A%84%E6%9E%9A%E4%B8%BE/</url>
+      
+        <content type="html"><![CDATA[<h1 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h1><p>枚举值默认从0开始，类内部的枚举并不是一个命名空间，因为每个实例用的枚举都一样，所以可以不构造实例直接通过类进行访问</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Test</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">enum</span> <span class="title class_">TestEnum</span> &#123;</span><br><span class="line">        D, E = <span class="number">5</span>, F,G,H=<span class="number">1</span>,I,J,K</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    Test test;</span><br><span class="line"></span><br><span class="line">    std::cout &lt;&lt; Test::D &lt;&lt; Test::E &lt;&lt; Test::F &lt;&lt; Test::G&lt;&lt; Test::H&lt;&lt; Test::I&lt;&lt; Test::J&lt;&lt; Test::K&lt;&lt; std::endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">输出为05671234</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> C++ </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>【03】【C++】C++中的静态</title>
       <link href="/2024/12/06/03_C++%E4%B8%AD%E7%9A%84%E9%9D%99%E6%80%81/"/>
       <url>/2024/12/06/03_C++%E4%B8%AD%E7%9A%84%E9%9D%99%E6%80%81/</url>
