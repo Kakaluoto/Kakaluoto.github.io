@@ -149,7 +149,7 @@ key 首先与 arr[right] 进行比较，如果 arr[right]<key，则arr[left]=arr
 最后得到 {23 58 13 10 57 62} 65 {106 78 95 85}，再对左子数列与右子数列进行同样的操作。最终得到一个有序的数列。
 快排伪代码：
 
-```c++
+```cpp
 void quick_sort(int[]arr, int low, inthigh){
 	if(low== high) return;
 	int i = partition(arr, low, high);
@@ -284,7 +284,7 @@ i = partition(arr, 1, n);
 
 这就是随机选择算法randomized_select，RS，其伪代码如下：
 
-```c++
+```cpp
 int RS(arr, low, high, k){
 	if(low== high) return arr[low];
 	i= partition(arr, low, high);

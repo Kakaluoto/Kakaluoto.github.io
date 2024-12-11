@@ -63,7 +63,7 @@ mathjax: true
 
 头文件 header.h
 
-```c++
+```cpp
 #include <iostream>
 #include <cstdio>
 #include <cstring>
@@ -83,7 +83,7 @@ void readelf_s(const char* filename);
 
 主函数 main.cpp
 
-```c++
+```cpp
 #include "header.h"
 
 int main(int argc, char* argv[]) {
@@ -105,7 +105,7 @@ int main(int argc, char* argv[]) {
 
 模仿readelf -h 的实现readelf_header.cpp
 
-```c++
+```cpp
 #include "header.h"
 
 void readelf_h(const char* filename) {
@@ -273,7 +273,7 @@ void readelf_h(const char* filename) {
 
 模仿readelf -S 的实现readelf_Section.cpp
 
-```c++
+```cpp
 #include "header.h"
 
 void readelf_S(const char* filename) {
@@ -444,7 +444,7 @@ void readelf_S(const char* filename) {
 
 模仿readelf -s 的实现readelf_symbol.cpp
 
-```C++
+```cpp
 #include "header.h"
 
 void readelf_s(const char* filename) {

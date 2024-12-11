@@ -40,7 +40,7 @@ Type "break" or "b" to insert breakpoint.
 
 系统调用Ptrace的定义：
 
-```c++
+```cpp
 long ptrace(enum __ptrace_request request, pid_t pid,void *addr,void *data);
 ```
 
