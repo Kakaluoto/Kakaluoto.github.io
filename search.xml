@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>【05】【C++】C++析构函数</title>
+      <link href="/2024/12/11/05_C++%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0/"/>
+      <url>/2024/12/11/05_C++%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0/</url>
+      
+        <content type="html"><![CDATA[<h1 id="析构函数"><a href="#析构函数" class="headerlink" title="析构函数"></a>析构函数</h1><p>构造函数是创建一个新的实例对象时运行，析构函数则是在销毁一个对象时运行。析构函数同时适用于栈和堆分配的对象。如果使用new分配一个对象，当你调用delete时，析构函数会被调用。析构函数使用的目的往往是为了释放资源。</p><p>代码样例</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Entity</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">float</span> x, y;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">Entity</span>() &#123;</span><br><span class="line">        x = <span class="number">0.0f</span>;</span><br><span class="line">        y = <span class="number">0.0f</span>;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Created Entity&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    ~<span class="built_in">Entity</span>() &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Deleted Entity&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Print</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; x &lt;&lt; <span class="string">&quot;,&quot;</span> &lt;&lt; y &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Entity e;</span><br><span class="line">    e.<span class="built_in">Print</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">Func</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输出结果</span><br><span class="line">Created Entity</span><br><span class="line">0---0</span><br><span class="line">Deleted Entity</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> C++ </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>【04】【C++】C++中的枚举</title>
       <link href="/2024/12/09/04_C++%E4%B8%AD%E7%9A%84%E6%9E%9A%E4%B8%BE/"/>
       <url>/2024/12/09/04_C++%E4%B8%AD%E7%9A%84%E6%9E%9A%E4%B8%BE/</url>
